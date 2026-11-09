@@ -11,8 +11,9 @@ const envSchema = z.object({
 
 export function readConfig(env: NodeJS.ProcessEnv = process.env) {
   const parsed = envSchema.parse(env);
-  const dataDir = parsed.VECTORA_GH_BOT_DATA_DIR?.replace(/^~(?=$|\/)/, homedir())
-    ?? resolve(homedir(), ".local/share/vectora-gh-bot");
+  const dataDir =
+    parsed.VECTORA_GH_BOT_DATA_DIR?.replace(/^~(?=$|\/)/, homedir()) ??
+    resolve(homedir(), ".local/share/vectora-gh-bot");
 
   return {
     host: parsed.VECTORA_GH_BOT_HOST,

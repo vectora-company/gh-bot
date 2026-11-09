@@ -88,14 +88,17 @@ fronteiras com Services e Engine.
 
 ## Desenvolvimento
 
-Requer Node.js 22+ e pnpm 10.
+Requer Python 3.10+, SCons, Node.js 22+, pnpm 10 e pre-commit.
 
 ```bash
-pnpm install --frozen-lockfile
+scons install
 pnpm dev
-pnpm check
-pnpm test
+scons lint
+scons tests
 ```
+
+`scons frontend` compila somente o painel web e não instala dependências.
+`scons ci` executa instalação, lint, build e testes do tooling.
 
 ## Governança
 

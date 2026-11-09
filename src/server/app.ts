@@ -27,11 +27,20 @@ export function createApp() {
       product: "Vectora GH Bot",
       servicesUrl: config.servicesUrl,
       setupRequired: true,
-      capabilities: ["github", "providers", "decision_models", "storage", "behavior"],
+      capabilities: [
+        "github",
+        "providers",
+        "decision_models",
+        "storage",
+        "behavior",
+      ],
     }),
   );
 
-  app.use("/*", serveStatic({ root: webRoot, rewriteRequestPath: (path) => path }));
+  app.use(
+    "/*",
+    serveStatic({ root: webRoot, rewriteRequestPath: (path) => path }),
+  );
   app.get("*", serveStatic({ root: webRoot, path: "index.html" }));
   return app;
 }

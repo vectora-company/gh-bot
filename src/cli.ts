@@ -7,13 +7,19 @@ import { startServer } from "./server/start.js";
 const [command = "start", ...args] = process.argv.slice(2);
 
 function help() {
-  console.log(`Vectora GH Bot\n\nUsage:\n  vectora-gh-bot [start]\n  vectora-gh-bot doctor\n  vectora-gh-bot --version\n  vectora-gh-bot --help\n\nThe setup UI and CLI configuration commands are being bootstrapped.`);
+  console.log(
+    `Vectora GH Bot\n\nUsage:\n  vectora-gh-bot [start]\n  vectora-gh-bot doctor\n  vectora-gh-bot --version\n  vectora-gh-bot --help\n\nThe setup UI and CLI configuration commands are being bootstrapped.`,
+  );
 }
 
 async function doctor() {
   const config = readConfig();
   const checks: Array<{ name: string; ok: boolean; detail: string }> = [
-    { name: "Node.js", ok: Number(process.versions.node.split(".")[0]) >= 22, detail: process.versions.node },
+    {
+      name: "Node.js",
+      ok: Number(process.versions.node.split(".")[0]) >= 22,
+      detail: process.versions.node,
+    },
   ];
 
   try {
@@ -21,11 +27,20 @@ async function doctor() {
     await access(config.dataDir, constants.R_OK | constants.W_OK);
     checks.push({ name: "Data directory", ok: true, detail: config.dataDir });
   } catch {
-    checks.push({ name: "Data directory", ok: false, detail: `${config.dataDir} is not writable` });
+    checks.push({
+      name: "Data directory",
+      ok: false,
+      detail: `${config.dataDir} is not writable`,
+    });
   }
 
-  checks.push({ name: "Services URL configured", ok: true, detail: config.servicesUrl });
-  for (const check of checks) console.log(`${check.ok ? "✓" : "✗"} ${check.name}: ${check.detail}`);
+  checks.push({
+    name: "Services URL configured",
+    ok: true,
+    detail: config.servicesUrl,
+  });
+  for (const check of checks)
+    console.log(`${check.ok ? "✓" : "✗"} ${check.name}: ${check.detail}`);
   if (checks.some((check) => !check.ok)) process.exitCode = 1;
 }
 

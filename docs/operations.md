@@ -17,6 +17,15 @@ vectora-gh-bot migrate               Aplica migrações de dados local
 No bootstrap, `start`, `doctor`, `--version` e `--help` existem; os outros
 comandos são roadmap e não devem ser apresentados como disponíveis.
 
+## SCons e instalação de desenvolvimento
+
+`scons install` instala as dependências travadas do workspace com `pnpm install --frozen-lockfile`. `scons frontend`
+somente compila `apps/web` e pressupõe que a instalação já foi feita;
+`scons build` compila painel e servidor, `scons lint` verifica tipos, `scons
+tests` executa a suíte disponível e `scons ci` encadeia as verificações locais.
+O CI de pull requests executa o fluxo SCons em Linux, Windows e macOS, além de
+pre-commit, validação de metadados e varredura de segredos.
+
 ## Observabilidade
 
 Logs JSON com timestamp, severity, component, request/job/run IDs e status de

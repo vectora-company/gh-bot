@@ -9,8 +9,13 @@ review-action chama o endpoint do Bot; o backend Services não é proxy do job.
 
 - Node.js 22 ou superior.
 - pnpm 10, conforme `packageManager` em `package.json`.
-- `pnpm install --frozen-lockfile` para instalar o workspace.
+- Python 3.10 ou superior, SCons e pre-commit.
+- `scons install` (executa `pnpm install --frozen-lockfile`) para instalar dependências Node do workspace pelo lockfile.
 - `pnpm dev` sobe o serviço e o painel Vite.
+- `scons frontend` compila somente o painel e não instala dependências.
+- `scons ci` executa instalação, lint, build e testes locais do tooling.
+- Instale os hooks com `pre-commit install`; o primeiro hook identifica o SO e
+  verifica as ferramentas necessárias em Linux, Windows e macOS.
 
 ## Regras de implementação
 
@@ -39,9 +44,10 @@ review-action chama o endpoint do Bot; o backend Services não é proxy do job.
 ## Verificações
 
 ```bash
-pnpm typecheck
-pnpm build
-pnpm test
+scons install
+scons lint
+scons tests
+scons ci
 ```
 
 Não use GitHub Actions `pull_request_target` para executar código vindo da

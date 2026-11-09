@@ -23,12 +23,12 @@ Os três modos usam o mesmo schema de configuração e APIs. Não há Electron.
 
 ## Quem faz o quê
 
-| Componente | Responsabilidade |
-|---|---|
-| GH Bot | Produto e superfície GitHub: CLI, painel, políticas, agendamento/idempotência e saída de reviews/comentários; pode ser operado pela Vectora ou pelo usuário. |
-| Vectora Engine | Runtime agêntico, providers, Decision Models e adapters de storage reutilizáveis, pelo binding npm/Rust. |
-| Vectora Services | Login/identidade Vectora, validação do token e capacidades compartilhadas explicitamente contratadas. Não encaminha eventos nem chamadas do runtime por padrão. |
-| Company | Criar/gerenciar a conta Vectora e disponibilizar o token; pode direcionar ao produto hospedado. Não configura o Bot. |
+| Componente              | Responsabilidade                                                                                                                                                              |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GH Bot                  | Produto e superfície GitHub: CLI, painel, políticas, agendamento/idempotência e saída de reviews/comentários; pode ser operado pela Vectora ou pelo usuário.                  |
+| Vectora Engine          | Runtime agêntico, providers, Decision Models e adapters de storage reutilizáveis, pelo binding npm/Rust.                                                                      |
+| Vectora Services        | Login/identidade Vectora, validação do token e capacidades compartilhadas explicitamente contratadas. Não encaminha eventos nem chamadas do runtime por padrão.               |
+| Company                 | Criar/gerenciar a conta Vectora e disponibilizar o token; pode direcionar ao produto hospedado. Não configura o Bot.                                                          |
 | `vectora-review-action` | Action configurada no repositório GitHub para chamar o endpoint público do GH Bot, com endpoint e segredo/token de autenticação; a borda Cloudflare pode rotear até o origin. |
 
 O GH Bot tem backend de produto pequeno, mas não nulo: precisa validar eventos,

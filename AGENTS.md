@@ -10,14 +10,14 @@ Company era o painel e o Vectora App servia como host do modo self-hosted.
 
 ## Fronteiras
 
-- **GH Bot:** configuração local, CLI, interface web, integração GitHub,
+- **Vectora GH Bot:** configuração local, CLI, interface web, integração GitHub,
   validação de eventos, idempotência de jobs e publicação de resultados.
 - **Vectora Engine:** runtime, chamadas a modelos, Decision Models e storage
   reutilizável. Não duplicar essas capacidades em TypeScript.
 - **Vectora Services:** login/autenticação pelo Vectora token e APIs
   compartilhadas explicitamente contratadas. Não encaminhar cada chamada de
   GitHub, provider, Engine ou storage pelo Services.
-- **Company:** dashboard de conta e emissão/acesso ao Vectora token. Não é o
+- **Vectora Company:** dashboard de conta e emissão/acesso ao Vectora token. Não é o
   frontend administrativo do GH Bot.
 
 Providers, chaves, modelos, storage e políticas do Bot são configurados na
@@ -45,6 +45,9 @@ Services, sem transformar o Services em proxy de execução.
    alteração que muda o contrato.
 8. Não afirme integração pronta antes de o contrato remoto existir e passar
    pelos testes de compatibilidade.
+9. Mantenha `SConstruct`, `.pre-commit-config.yaml`, `utils/` e `.github/workflows/`
+   como partes obrigatórias do bootstrap. CI e hooks devem funcionar em Linux,
+   Windows e macOS; `scons frontend` nunca instala dependências.
 
 ## Referências
 
@@ -54,3 +57,5 @@ Services, sem transformar o Services em proxy de execução.
 - Engine: `docs/engine-integration.md`.
 - Segurança: `SECURITY.md` e `docs/security.md`.
 - Desenvolvimento: `CONTRIBUTING.md`.
+- Comandos SCons: `SConstruct`.
+- Hooks locais: `.pre-commit-config.yaml`.

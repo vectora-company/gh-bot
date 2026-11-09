@@ -24,11 +24,11 @@ Decision Models como sinônimo do modelo de geração principal.
 Cada tipo de dado seleciona backend compatível de forma independente; modos
 misto/local/remoto são válidos quando a Engine os suporta.
 
-| Tipo | Opções candidatas |
-|---|---|
-| Relacional/configuração/job ledger | SQLite local ou PostgreSQL remoto |
-| Vetorial/RAG | LanceDB local ou Qdrant remoto |
-| KV/cache/streams | NATS local, Redis remoto ou capacidades definidas pela Engine |
+| Tipo                               | Opções candidatas                                             |
+| ---------------------------------- | ------------------------------------------------------------- |
+| Relacional/configuração/job ledger | SQLite local ou PostgreSQL remoto                             |
+| Vetorial/RAG                       | LanceDB local ou Qdrant remoto                                |
+| KV/cache/streams                   | NATS local, Redis remoto ou capacidades definidas pela Engine |
 
 O GH Bot não codifica adapters de storage diretamente. O inventário exato,
 semânticas e limitações ficam no contrato da Engine. É permitido rodar
