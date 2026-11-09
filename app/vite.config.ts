@@ -8,7 +8,7 @@ const appRoot = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
   root: appRoot,
-  plugins: [tanstackStart(), nitro(), react()],
+  plugins: [tanstackStart(), nitro({ serverDir: "./server" }), react()],
   server: {
     host: "127.0.0.1",
     port: 3210,

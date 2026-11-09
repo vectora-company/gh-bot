@@ -1,5 +1,26 @@
 # Providers, modelos e storage
 
+## Configuração pelo CLI
+
+`gh-bot config edit` percorre todas as áreas configuráveis e abre um editor JSON
+para cada uma: GitHub, providers, modelos por tarefa, Decision Models, storage,
+comportamento e opções da Engine. O mesmo arquivo versionado é compartilhado
+por operações locais e, futuramente, pelo dashboard. O formato inicial usa
+`version: 1`; campos específicos evoluem conforme os contratos da Engine e do
+runtime forem implementados.
+
+```bash
+gh-bot config show
+gh-bot config export ./bot-config.json
+gh-bot config import ./bot-config.json
+```
+
+O arquivo de configuração nunca contém o Vectora token. Login fica em
+`auth.json`, separado do arquivo exportável. Valores secretos de provider,
+GitHub e storage devem ser referenciados por variável de ambiente ou referência
+local, por exemplo `apiKeyEnv` ou `secretRef`; o CLI rejeita valores secretos
+diretos para impedir que sejam exportados acidentalmente.
+
 ## Providers e modelos
 
 O operador configura seus próprios providers dentro do GH Bot. A configuração

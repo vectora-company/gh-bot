@@ -1,21 +1,44 @@
 # CLI e operação
 
-## Comandos planejados
+## CLI global
 
 ```text
-vectora-gh-bot start                 Inicia o app e seu servidor
-vectora-gh-bot setup                 Configura caminho interativo
-vectora-gh-bot auth login            Conecta Vectora Services
-vectora-gh-bot github connect        Conecta uma conta/instalação GitHub
-vectora-gh-bot config validate       Valida configuração e migrações
-vectora-gh-bot config export        Exporta sem secrets por padrão
-vectora-gh-bot doctor                Diagnostica runtime e dependências
-vectora-gh-bot status                Estado das integrações e jobs
-vectora-gh-bot migrate               Aplica migrações de dados local
+gh-bot                               Abre o menu interativo
+gh-bot start                         Inicia com o dashboard
+gh-bot start --mode background      Inicia sem servir o dashboard
+gh-bot background                    Atalho para o modo em segundo plano
+gh-bot status                        Consulta o processo em segundo plano
+gh-bot stop                          Solicita encerramento gracioso
+gh-bot config edit                   Edita GitHub, providers, modelos, storage,
+                                     comportamento e opções da Engine
+gh-bot config show                   Exibe configuração sem segredos
+gh-bot config export [arquivo]       Exporta configuração sem login
+gh-bot config import <arquivo>       Importa sem substituir login local
+gh-bot auth login|status|logout      Gerencia credencial local do Services
+gh-bot doctor                        Diagnostica runtime, build e configuração
 ```
 
-No bootstrap, `start`, `doctor`, `--version` e `--help` existem; os outros
-comandos são roadmap e não devem ser apresentados como disponíveis.
+O pacote instala os executáveis globais `gh-bot` e `vectora-gh-bot`. Sem
+argumentos, o CLI apresenta opções para configurar, autenticar, abrir o
+dashboard, iniciar em segundo plano e importar/exportar a configuração.
+`config edit` abre cada seção como JSON no editor do terminal, permitindo
+configurar os campos da Engine sem limitar o CLI a uma lista fixa de providers.
+
+O arquivo principal é `config.json`; autenticação fica em `auth.json`, ambos no
+diretório de dados do usuário. Exportação inclui apenas o schema de config e
+falha se encontrar valores de token, senha, secret, API key ou private key. Use
+referências como `apiKeyEnv`/`secretRef` para segredos. Importar também rejeita
+campos de auth/login/session e preserva a credencial que já está instalada.
+
+O modo background executa o mesmo servidor TanStack Start/Nitro. Ele mantém
+health e rotas `/api/*`, mas não serve páginas nem assets React. O PID fica no
+diretório de dados e os logs em `logs/gh-bot.log`; `stop` envia SIGTERM para um
+shutdown gracioso. Não é necessário Hono ou um segundo servidor HTTP.
+
+`auth login` coleta o Vectora token sem ecoá-lo e guarda-o com permissão local
+restrita. A integração de validação/troca de token ainda depende do contrato
+oficial do Services, descrito em `services-integration.md`; o comando deixa
+essa limitação explícita e não simula uma sessão remota autenticada.
 
 ## SCons e instalação de desenvolvimento
 

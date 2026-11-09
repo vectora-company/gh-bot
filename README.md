@@ -40,17 +40,29 @@ entitlement, sem executar o bot.
 
 ```bash
 npm install --global @vectora/gh-bot
-vectora-gh-bot doctor
-vectora-gh-bot start
+gh-bot
 ```
 
-Depois, abra `http://127.0.0.1:3210` para configurar a instalação. TanStack Start
-serve o painel e as rotas HTTP no mesmo runtime. O CLI também será a interface
-para setup, conexão com Services, contas GitHub, diagnóstico e
-exportação/importação segura da configuração.
+O primeiro comando abre o CLI interativo. Nele, configure o bot, faça login,
+abra o dashboard React ou deixe o serviço rodando em segundo plano. Também é
+possível usar os comandos diretamente:
 
-O servidor pode ser iniciado com `node app/dist/cli.js start` ou
-`bun run app/dist/cli.js start`, tanto em desktop quanto em VPS.
+```bash
+gh-bot config                 # editar todas as áreas de configuração
+gh-bot auth login             # guardar o Vectora token localmente
+gh-bot start                  # iniciar com o dashboard
+gh-bot background             # iniciar sem servir o dashboard
+gh-bot status                 # consultar execução em segundo plano
+gh-bot stop                   # parar execução em segundo plano
+gh-bot config export bot.json # exportar config sem login
+gh-bot config import bot.json # importar sem substituir login local
+gh-bot doctor
+```
+
+`gh-bot` e `vectora-gh-bot` são comandos globais publicados pelo pacote npm.
+Também funciona com Bun (`bun add --global @vectora/gh-bot`). TanStack Start
+serve dashboard e rotas HTTP no mesmo runtime; no modo background as páginas e
+assets do dashboard retornam 404, enquanto health e APIs continuam disponíveis.
 
 ### Docker
 
@@ -85,11 +97,13 @@ padrão.
 
 ## Estado do bootstrap
 
-Este repositório está no bootstrap inicial. O CLI, a rota de health e o painel
-de setup são o esqueleto de desenvolvimento; login no Services, vínculo de
-GitHub, execução de jobs pela Engine, persistência de configuração e adaptadores
-de storage ainda não estão implementados. A interface mostra esses estados como
-pendentes e não simula conexões bem-sucedidas.
+Este repositório está no bootstrap inicial. O CLI interativo já edita e persiste
+as seções de configuração, executa o servidor em primeiro ou segundo plano e
+importa/exporta configuração sem autenticação. O comando `auth login` guarda o
+Vectora token separado com permissões locais restritas. A validação remota do
+token ainda depende do contrato de autenticação publicado pelo Services; vínculo
+de GitHub, execução de jobs pela Engine e adapters de storage continuam no
+roadmap e não são apresentados como conexões já funcionais.
 
 Consulte [`docs/`](docs/README.md) para arquitetura, segurança, instalação e as
 fronteiras com Services e Engine.

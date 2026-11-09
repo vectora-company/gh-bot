@@ -54,6 +54,29 @@ const csrfMiddleware = createCsrfMiddleware({
   filter: (context) => context.handlerType === "serverFn",
 });
 
+const backgroundModeMiddleware = createMiddleware().server(
+  async ({ request, next }) => {
+    if (process.env.VECTORA_GH_BOT_MODE === "background") {
+      const pathname = new URL(request.url).pathname;
+      const isOperationalRoute =
+        pathname === "/healthz" ||
+        pathname === "/api/openapi.json" ||
+        pathname.startsWith("/api/");
+      if (!isOperationalRoute) {
+        throw new Response("Dashboard disabled in background mode.", {
+          status: 404,
+          headers: { "content-type": "text/plain; charset=utf-8" },
+        });
+      }
+    }
+    return next();
+  },
+);
+
 export const startInstance = createStart(() => ({
-  requestMiddleware: [csrfMiddleware, requestLogMiddleware],
+  requestMiddleware: [
+    csrfMiddleware,
+    backgroundModeMiddleware,
+    requestLogMiddleware,
+  ],
 }));

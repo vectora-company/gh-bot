@@ -1,5 +1,5 @@
 import { homedir, platform } from "node:os";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 import { z } from "zod";
 
 const envSchema = z.object({
@@ -30,6 +30,10 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env) {
     host: parsed.VECTORA_GH_BOT_HOST,
     port: parsed.VECTORA_GH_BOT_PORT,
     dataDir,
+    configFile: join(dataDir, "config.json"),
+    authFile: join(dataDir, "auth.json"),
+    pidFile: join(dataDir, "gh-bot.pid"),
+    logFile: join(dataDir, "logs", "gh-bot.log"),
     servicesUrl: parsed.VECTORA_SERVICES_URL.replace(/\/$/, ""),
   } as const;
 }
