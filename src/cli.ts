@@ -24,7 +24,7 @@ async function doctor() {
     checks.push({ name: "Data directory", ok: false, detail: `${config.dataDir} is not writable` });
   }
 
-  checks.push({ name: "Vectora Services", ok: true, detail: config.servicesUrl });
+  checks.push({ name: "Services URL configured", ok: true, detail: config.servicesUrl });
   for (const check of checks) console.log(`${check.ok ? "✓" : "✗"} ${check.name}: ${check.detail}`);
   if (checks.some((check) => !check.ok)) process.exitCode = 1;
 }

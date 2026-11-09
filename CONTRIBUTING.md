@@ -1,7 +1,9 @@
 # Contribuindo
 
-Vectora GH Bot é uma aplicação self-hosted em TypeScript que consome a Vectora
-Engine e o Vectora Services por contratos versionados.
+Vectora GH Bot é um produto independente em TypeScript, operado pela Vectora
+como serviço pago ou pelo usuário como self-hosted. Consome a Vectora Engine e
+usa o Vectora Services principalmente para login/identidade e entitlement. A
+review-action chama o endpoint do Bot; o backend Services não é proxy do job.
 
 ## Ambiente
 
@@ -16,8 +18,16 @@ Engine e o Vectora Services por contratos versionados.
   agente, cliente de provider ou adapter de storage paralelo em TypeScript.
 - O GH Bot mantém as regras próprias de GitHub: validar eventos, deduplicar
   entregas, aplicar configurações do operador e publicar resultados.
-- O Services é acessado por um cliente tipado. Não imite seus contratos nem
-  tome decisões de conta/entitlement no navegador.
+- O Services é acessado por um cliente tipado para login e capacidades
+  explicitamente contratadas. Não roteie por ele cada evento GitHub, execução da
+  Engine, chamada de provider ou operação de storage. Não tome decisões de
+  conta/entitlement no navegador.
+- Preserve os dois modos de operação. O hosted é operado pela Vectora e depende
+  da assinatura; o self-hosted roda na infraestrutura do usuário. Ambos usam a
+  UI/CLI do GH Bot e a mesma Engine.
+- Para a `review-action`, mantenha explícito o contrato de endpoint público,
+  credencial do Bot, roteamento Cloudflare opcional e origin. Não confunda esse
+  segredo com o Vectora token.
 - Segredos nunca entram em logs, telemetria, saída de diagnóstico, bundle web
   ou arquivos de configuração versionados.
 - Toda entrada de GitHub, modelo, repositório e configuração é não confiável;

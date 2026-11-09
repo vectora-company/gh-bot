@@ -4,13 +4,15 @@
 
 1. O operador cria uma conta Vectora gratuita e obtém seu Vectora token no
    dashboard da Company.
-2. No painel local ou CLI, informa o token. O GH Bot o envia ao Vectora Services
-   por TLS para autenticar a conta e associar a instalação.
-3. Services devolve uma identidade/resultado de sessão conforme contrato
-   versionado; o Bot guarda o token como segredo local e apresenta expiração,
+2. Na UI/CLI do GH Bot, informa o token. O GH Bot o envia ao Vectora Services
+   por TLS para login e validação da identidade.
+3. Services devolve identidade/resultado de sessão conforme contrato
+   versionado; o Bot guarda a credencial de forma segura e apresenta expiração,
    estado e instruções de revogação.
-4. A conexão com o Services é opcional para executar capacidades locais da
-   Engine, exceto operações que dependam explicitamente de integração remota.
+4. Login no Services não coloca o Services no caminho de eventos GitHub,
+   chamadas de provider ou storage. A execução self-hosted/local deve continuar
+   disponível com recursos próprios, mesmo quando capacidades remotas do
+   Services não estiverem conectadas.
 
 O token não deve aparecer em URL, argumentos de processo, shell history, logs,
 browser storage ou status exports. Preferir device flow ou prompt interativo na
@@ -18,15 +20,17 @@ CLI e sessão local HttpOnly/SameSite no navegador.
 
 ## Contas GitHub
 
-Depois da identidade Vectora, o operador conecta uma ou mais contas/instalações
-GitHub através do fluxo mediado pelo Services. A UI mostra owner, repositórios,
-permissões concedidas, data de conexão, validade e estado. Remover/desautorizar
-uma conexão revoga o acesso sem apagar configurações locais não relacionadas.
+Depois da identidade Vectora, o usuário configura uma ou mais contas/instalações
+GitHub no próprio GH Bot, usando o mecanismo de credenciais definido pelo modo
+de operação. Services pode oferecer login/consentimento ou recursos
+explicitamente contratados, mas não é proxy das chamadas ao GitHub. A UI mostra
+owner, repositórios, permissões concedidas, validade e estado.
 
 OAuth de usuário e instalação de GitHub App têm semânticas diferentes. O produto
-deve preferir instalação de GitHub App e tokens de instalação curtos e
-restritos; o Services precisa publicar o contrato de associação, renovação e
-revogação adequado. Um PAT amplo não é substituto silencioso.
+deve preferir GitHub App ou credenciais curtas e restritas. Segredos do GH Bot
+para autenticar chamadas da `review-action` devem ser emitidos localmente no
+self-hosted ou pelo fluxo do produto hospedado, ter escopo/revogação e não ser
+confundidos com o Vectora token. Um PAT amplo não é substituto silencioso.
 
 ## Acesso ao painel
 

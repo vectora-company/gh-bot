@@ -8,7 +8,7 @@ operador concede e deve limitar cada integração a uma instalação/repositóri
 
 - Crie uma instalação GitHub App com permissões mínimas e escolha os
   repositórios explicitamente. Não use token pessoal amplo como padrão.
-- Use TLS em qualquer acesso remoto ao painel, webhook ou API.
+- Use TLS em qualquer acesso remoto ao painel, endpoint do Bot ou API.
 - Restrinja o painel a loopback durante configuração inicial; antes de expor na
   rede, habilite autenticação local e reverse proxy com TLS.
 - Armazene provider keys, credenciais de storage, Vectora token e chaves de
@@ -27,8 +27,10 @@ endpoint, exfiltração de credenciais por logs, callback forgery, concorrência
 de jobs e acesso indevido ao painel. Cada superfície precisa de validação,
 autorização, limites, redaction e testes antes de produção.
 
-O contrato de GitHub App, relay por Services e armazenamento de credenciais ainda
-está em desenho. Até estar implementado, não aceite webhooks públicos nem
-declare a instalação pronta para produção.
+O contrato de autenticação da `review-action`, roteamento de endpoint para
+origins self-hosted e armazenamento/rotação de credenciais ainda está em
+desenho. Até estar implementado, não aceite requests públicos nem declare a
+instalação pronta para produção. O endpoint não deve tratar o Services como
+proxy de aplicação.
 
 Reporte vulnerabilidades privadamente para `security@vectora.company`.

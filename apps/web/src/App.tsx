@@ -5,27 +5,31 @@ export function App() {
     <div className="shell">
       <aside className="sidebar">
         <div className="brand"><span className="brand-mark">V</span><span>Vectora <b>GH Bot</b></span></div>
-        <div className="instance"><span className="status-dot" /> Instalação local <small>bootstrap</small></div>
+        <div className="instance"><span className="status-dot" /> Instalação GH Bot <small>bootstrap</small></div>
         <nav aria-label="Configurações">
           {sections.map((section, index) => <a className={index === 0 ? "active" : "disabled"} href="#" key={section}>{section}<span>{index === 0 ? "⌂" : "·"}</span></a>)}
         </nav>
-        <div className="sidebar-footer"><span>Self-hosted</span><span>v0.1.0-dev</span></div>
+        <div className="sidebar-footer"><span>Hosted · Self-hosted</span><span>v0.1.0-dev</span></div>
       </aside>
 
       <main>
-        <header className="topbar"><div><span className="eyebrow">CONFIGURAÇÃO DA INSTÂNCIA</span><h1>Prepare seu GH Bot</h1></div><button className="user-button" disabled>Conectar ao Services <span>↗</span></button></header>
+        <header className="topbar"><div><span className="eyebrow">PRODUTO INDEPENDENTE · VECTORa ENGINE</span><h1>Configure seu GH Bot</h1></div><button className="user-button" disabled>Entrar com Vectora Services <span>↗</span></button></header>
         <section className="intro">
           <div className="intro-icon">✳</div>
-          <div><p className="eyebrow">SEU BOT, SUA INFRAESTRUTURA</p><h2>Um runtime independente para suas contas GitHub.</h2><p>Conecte o Vectora Services para validar sua conta e vincular GitHub. Providers, modelos, storage e comportamento serão configurados e guardados nesta instalação.</p></div>
+          <div><p className="eyebrow">UM PRODUTO, DUAS FORMAS DE OPERAR</p><h2>Automação agêntica para seus repositórios GitHub.</h2><p>O GH Bot consome a Vectora Engine sem depender do app desktop. Escolha entre a operação hosted pela Vectora ou hospedar sua própria instância; a configuração fica no GH Bot.</p></div>
         </section>
         <section className="steps">
-          <article className="step-card"><div className="step-number">01</div><div><span className="tag">IDENTIDADE</span><h3>Conectar ao Services</h3><p>Use o Vectora token do dashboard da Company. Contas Free podem criar uma conta e autenticar a instalação.</p><button disabled>Conectar conta <span>→</span></button></div></article>
-          <article className="step-card"><div className="step-number">02</div><div><span className="tag">GITHUB</span><h3>Vincular contas e instalações</h3><p>Adicione uma ou mais contas GitHub e escolha quais repositórios esta instância poderá atender.</p><button disabled>Adicionar GitHub <span>→</span></button></div></article>
-          <article className="step-card"><div className="step-number">03</div><div><span className="tag">RUNTIME</span><h3>Configurar Engine</h3><p>Escolha providers, modelos de tarefa, Decision Models e backends de storage conforme as capacidades da Engine.</p><button disabled>Configurar Engine <span>→</span></button></div></article>
+          <article className="step-card"><div className="step-number">01</div><div><span className="tag">HOSTED · ASSINATURA</span><h3>Operado pela Vectora</h3><p>A Vectora Ltda mantém o runtime e a disponibilidade. O endpoint hospedado será conectado à Action após login e validação do plano.</p><button disabled>Verificar acesso hosted <span>→</span></button></div></article>
+          <article className="step-card"><div className="step-number">02</div><div><span className="tag">SELF-HOSTED · SEUS RECURSOS</span><h3>Hospede sua instância</h3><p>Instale por npm, Docker ou Kubernetes na sua VPS. Configure endpoint e credenciais; a review-action chega pela URL pública, com roteamento Cloudflare opcional, sem executar o Bot no Services.</p><button disabled>Configurar instalação <span>→</span></button></div></article>
+        </section>
+        <section className="steps">
+          <article className="step-card"><div className="step-number">03</div><div><span className="tag">IDENTIDADE</span><h3>Login com Services</h3><p>Use o Vectora token disponibilizado pela Company para autenticar sua conta. Login não encaminha eventos nem chamadas de execução pelo Services.</p><button disabled>Entrar com Vectora <span>→</span></button></div></article>
+          <article className="step-card"><div className="step-number">04</div><div><span className="tag">GITHUB</span><h3>Conectar pelo review-action</h3><p>Configure endpoint e token próprio do GH Bot no workflow para chamar a instância hospedada ou seu endpoint self-hosted.</p><button disabled>Configurar Action <span>→</span></button></div></article>
+          <article className="step-card"><div className="step-number">05</div><div><span className="tag">ENGINE</span><h3>Configurar runtime agêntico</h3><p>Escolha providers, modelos por tarefa, Decision Models e backends de storage suportados pela Engine.</p><button disabled>Configurar Engine <span>→</span></button></div></article>
         </section>
         <section className="bottom-grid">
-          <div className="panel"><div className="panel-heading"><div><span className="eyebrow">ESTADO DA INSTÂNCIA</span><h3>Serviços conectados</h3></div><span className="pill neutral">Não configurado</span></div><div className="service-row"><span>Vectora Services</span><span className="muted">Aguardando token</span></div><div className="service-row"><span>Vectora Engine</span><span className="muted">Binding npm pendente</span></div><div className="service-row"><span>GitHub</span><span className="muted">Nenhuma conta vinculada</span></div></div>
-          <div className="panel panel-note"><span className="eyebrow">PRINCÍPIO DE PRIVACIDADE</span><h3>Configuração permanece no seu host</h3><p>Chaves de providers, credenciais de storage e políticas do Bot pertencem a esta instalação. O Services cuida de identidade e integrações compartilhadas, não do runtime local.</p><a href="https://github.com/vectora-ltda/gh-bot/tree/main/docs">Ler arquitetura e segurança <span>↗</span></a></div>
+          <div className="panel"><div className="panel-heading"><div><span className="eyebrow">ESTADO DO PRODUTO</span><h3>Capacidades</h3></div><span className="pill neutral">Bootstrap</span></div><div className="service-row"><span>Vectora Services</span><span className="muted">Login/entitlement</span></div><div className="service-row"><span>Vectora Engine</span><span className="muted">Binding npm pendente</span></div><div className="service-row"><span>review-action</span><span className="muted">Endpoint direto</span></div></div>
+          <div className="panel panel-note"><span className="eyebrow">TRÁFEGO E PRIVACIDADE</span><h3>Services não processa os jobs</h3><p>Na modalidade self-hosted, a review-action chama o endpoint público, que pode rotear pela borda Cloudflare até sua instância. A Vectora opera a modalidade paga. O Services cuida de login e de capacidades contratadas.</p><a href="https://github.com/vectora-ltda/gh-bot/tree/main/docs">Ler arquitetura e segurança <span>↗</span></a></div>
         </section>
         <footer>Vectora GH Bot · Open source sob AGPL-3.0 · <a href="https://github.com/vectora-ltda/gh-bot">vectora-ltda/gh-bot</a></footer>
       </main>

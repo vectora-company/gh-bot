@@ -1,9 +1,10 @@
 # Instruções para agentes: Vectora GH Bot
 
-Este é o repositório do serviço self-hosted Vectora GH Bot. A raiz do checkout
-é a fonte de configuração do produto. O app TypeScript consome a Vectora
-Engine pelo pacote npm e usa o Vectora Services como intermediário de identidade
-e integrações hospedadas. Não trate as issues antigas do Services ou da Company
+Este é o repositório do produto independente Vectora GH Bot, disponível como
+serviço hospedado pago pela Vectora Ltda ou como instalação self-hosted do
+usuário. A raiz do checkout é a fonte de configuração do produto. O app
+TypeScript consome a Vectora Engine pelo pacote npm e usa o Vectora Services
+principalmente para login/identidade e entitlement hospedado. Não trate as issues antigas do Services ou da Company
 como especificação deste produto: elas descrevem o fluxo anterior, no qual a
 Company era o painel e o Vectora App servia como host do modo self-hosted.
 
@@ -13,16 +14,17 @@ Company era o painel e o Vectora App servia como host do modo self-hosted.
   validação de eventos, idempotência de jobs e publicação de resultados.
 - **Vectora Engine:** runtime, chamadas a modelos, Decision Models e storage
   reutilizável. Não duplicar essas capacidades em TypeScript.
-- **Vectora Services:** autenticação da conta pelo Vectora token, vínculo de
-  contas/instalações GitHub e APIs compartilhadas explicitamente contratadas.
+- **Vectora Services:** login/autenticação pelo Vectora token e APIs
+  compartilhadas explicitamente contratadas. Não encaminhar cada chamada de
+  GitHub, provider, Engine ou storage pelo Services.
 - **Company:** dashboard de conta e emissão/acesso ao Vectora token. Não é o
   frontend administrativo do GH Bot.
 
 Providers, chaves, modelos, storage e políticas do Bot são configurados na
 instância self-hosted pela UI ou CLI. Não persistir esses valores na Company.
-Conta Free pode obter o Vectora token; não assumir que o modo self-hosted local
-precisa de entitlement Pro. Entitlements de qualquer capacidade hospedada são
-decididos pelo Services.
+Conta Free pode obter o Vectora token e usar o modo self-hosted com recursos
+próprios. A modalidade hospedada é paga; seus entitlements são validados pelo
+Services, sem transformar o Services em proxy de execução.
 
 ## Regras
 
