@@ -8,30 +8,37 @@
     "node": ">=22"
   },
   "bin": {
-    "vectora-gh-bot": "dist/cli.js"
+    "vectora-gh-bot": "app/dist/server/cli.js"
   },
   "files": [
-    "dist",
+    "app/dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "dev": "concurrently -k \"tsx watch src/cli.ts start\" \"pnpm --dir apps/web dev\"",
-    "dev:bun": "concurrently -k \"bun --watch src/cli.ts start\" \"pnpm --dir apps/web dev\"",
-    "start": "node dist/cli.js start",
-    "start:bun": "bun run dist/cli.js start",
-    "doctor": "tsx src/cli.ts doctor",
-    "build": "pnpm --dir apps/web build && tsc -p tsconfig.build.json",
+    "dev": "concurrently -k \"tsx watch app/src/server/cli.ts start\" \"vite --config app/vite.config.ts\"",
+    "dev:bun": "concurrently -k \"bun --watch app/src/server/cli.ts start\" \"vite --config app/vite.config.ts\"",
+    "start": "node app/dist/server/cli.js start",
+    "start:bun": "bun run app/dist/server/cli.js start",
+    "doctor": "tsx app/src/server/cli.ts doctor",
+    "build": "pnpm build:frontend && tsc -p tsconfig.build.json",
+    "build:frontend": "vite build --config app/vite.config.ts",
     "build:server": "tsc -p tsconfig.build.json",
-    "typecheck": "pnpm --dir apps/web typecheck && tsc --noEmit",
+    "typecheck": "tsc --noEmit -p app/tsconfig.json && tsc --noEmit",
     "check": "pnpm typecheck && pnpm build",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@tanstack/react-query": "5.107.1",
+    "@tanstack/react-router": "1.170.46",
     "@hono/bun": "1.0.1",
     "@hono/node-server": "^1.19.0",
     "@hono/zod-openapi": "1.6.3",
     "hono": "^4.9.0",
+    "motion": "14.10.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "5.1.0",
     "zod": "^4.1.0"
   },
   "devDependencies": {

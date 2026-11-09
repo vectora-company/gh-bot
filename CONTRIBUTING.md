@@ -11,7 +11,7 @@ review-action chama o endpoint do Bot; o backend Services não é proxy do job.
 - Bun também é suportado para executar o servidor e scripts locais.
 - pnpm 10, conforme `packageManager` em `package.json`.
 - Python 3.10 ou superior, SCons e pre-commit.
-- `scons install` (executa `pnpm install --frozen-lockfile`) para instalar dependências Node do workspace pelo lockfile.
+- `scons install` (executa `pnpm install --frozen-lockfile`) para instalar as dependências do único app pelo lockfile.
 - `pnpm dev` sobe o serviço e o painel Vite.
 - `scons frontend` compila somente o painel e não instala dependências.
 - `scons ci` executa instalação, lint, build e testes locais do tooling.

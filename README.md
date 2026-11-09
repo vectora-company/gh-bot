@@ -48,8 +48,8 @@ runtime próprios para Node.js e Bun. O CLI também
 será a interface para setup, conexão com Services, contas GitHub, diagnóstico e
 exportação/importação segura da configuração.
 
-O servidor pode ser iniciado com `node dist/cli.js start` ou
-`bun run dist/cli.js start`, tanto em desktop quanto em VPS.
+O servidor pode ser iniciado com `node app/dist/server/cli.js start` ou
+`bun run app/dist/server/cli.js start`, tanto em desktop quanto em VPS.
 
 ### Docker
 

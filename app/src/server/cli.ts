@@ -2,7 +2,7 @@
 import { access, mkdir } from "node:fs/promises";
 import { constants } from "node:fs";
 import { readConfig } from "./config.js";
-import { startServer } from "./server/start.js";
+import { startServer } from "./start.js";
 
 const [command = "start", ...args] = process.argv.slice(2);
 

@@ -52,7 +52,9 @@ Services, sem transformar o Services em proxy de execução.
 9. Mantenha `SConstruct`, `.pre-commit-config.yaml`, `utils/` e `.github/workflows/`
    como partes obrigatórias do bootstrap. CI e hooks devem funcionar em Linux,
    Windows e macOS; `scons frontend` nunca instala dependências.
-10. Rotas novas da API pertencem a `src/server/routes/`, usam contratos
+10. Todo o código do produto fica em `app/`: frontend em `app/src/frontend/`,
+    API Hono e CLI em `app/src/server/`. Rotas novas da API pertencem a
+    `app/src/server/routes/`, usam contratos
     tipados/OpenAPI e validação Zod. Preserve middleware de request ID, log
     estruturado, cabeçalhos seguros, limites de payload e CORS allowlist.
 

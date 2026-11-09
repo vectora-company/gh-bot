@@ -1,5 +1,5 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import type { AppConfig } from "../../config.js";
+import type { AppConfig } from "../config.js";
 
 const bootstrapRoute = createRoute({
   method: "get",

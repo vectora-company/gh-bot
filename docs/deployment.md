@@ -10,7 +10,7 @@ Nginx ou Traefik), restringindo o acesso ao endpoint de administração.
 npm install --global @vectora/gh-bot
 vectora-gh-bot start
 # ou, para um build local:
-bun run dist/cli.js start
+bun run app/dist/server/cli.js start
 ```
 
 O endpoint de webhook deve ser publicado com HTTPS e autenticação dedicada da

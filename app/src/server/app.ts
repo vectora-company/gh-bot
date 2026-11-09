@@ -7,8 +7,8 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { AppConfig } from "../config.js";
-import { readConfig } from "../config.js";
+import type { AppConfig } from "./config.js";
+import { readConfig } from "./config.js";
 import { createBootstrapRoutes } from "./routes/bootstrap.js";
 import { createHealthRoutes } from "./routes/health.js";
 

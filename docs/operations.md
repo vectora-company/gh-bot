@@ -19,8 +19,9 @@ comandos são roadmap e não devem ser apresentados como disponíveis.
 
 ## SCons e instalação de desenvolvimento
 
-`scons install` instala as dependências travadas do workspace com `pnpm install --frozen-lockfile`. `scons frontend`
-somente compila `apps/web` e pressupõe que a instalação já foi feita;
+`scons install` instala as dependências travadas do app com
+`pnpm install --frozen-lockfile`. `scons frontend` somente compila o frontend
+em `app/` e pressupõe que a instalação já foi feita;
 `scons build` compila painel e servidor, `scons lint` verifica tipos, `scons
 tests` executa a suíte disponível e `scons ci` encadeia as verificações locais.
 O CI de pull requests executa o fluxo SCons em Linux, Windows e macOS, além de

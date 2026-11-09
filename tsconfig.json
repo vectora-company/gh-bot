@@ -11,5 +11,5 @@
     "exactOptionalPropertyTypes": true,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["app/src/server/**/*.ts"]
 }

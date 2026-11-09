@@ -1,4 +1,4 @@
-import { readConfig } from "../config.js";
+import { readConfig } from "./config.js";
 import { createApp } from "./app.js";
 
 type RuntimeServer = { stop(force?: boolean): void };

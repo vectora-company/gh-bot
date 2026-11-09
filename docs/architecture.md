@@ -19,6 +19,10 @@ flowchart LR
 
 ## Limites
 
+- O produto é um único app e pacote npm. `app/src/frontend/` contém a UI e
+  `app/src/server/` contém a CLI e a API Hono; ambos são compilados/publicados
+  juntos sem workspace ou pacote frontend separado.
+
 - A UI chama somente a API local. Tokens e credenciais não vão para o bundle.
 - API Hono controla configuração, setup, ciclo de vida de jobs e adaptadores
   GitHub; a Engine executa o runtime genérico.

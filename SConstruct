@@ -1,4 +1,4 @@
-"""Cross-platform SCons tasks for the Vectora GH Bot workspace."""
+"""Cross-platform SCons tasks for the single Vectora GH Bot application."""
 
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def _install(target, source, env):
 
 
 def _web(target, source, env):
-    _run("pnpm", "--dir", "apps/web", "build")
+    _run("pnpm", "build:frontend")
 
 
 def _lint(target, source, env):
@@ -55,9 +55,10 @@ def _lint(target, source, env):
         "exec",
         "prettier",
         "--check",
-        "src",
-        "apps/web/src",
-        "apps/web/vite.config.ts",
+        "app/src",
+        "app/vite.config.ts",
+        "app/tsconfig.json",
+        "app/index.html",
         "docs",
         "README.md",
         "AGENTS.md",
@@ -66,7 +67,7 @@ def _lint(target, source, env):
         ".pre-commit-config.yaml",
         ".prettierrc.json",
         "package.json",
-        "pnpm-workspace.yaml",
+        "pnpm-lock.yaml",
     )
     _run("pnpm", "typecheck")
 
@@ -84,7 +85,7 @@ def _ci(target, source, env):
 
 
 def _clean(target, source, env):
-    for path in ("dist", "apps/web/dist", "coverage", ".scons-logs"):
+    for path in ("app/dist", "coverage", ".scons-logs"):
         absolute = os.path.join(ROOT, path)
         if os.path.isdir(absolute):
             shutil.rmtree(absolute)
@@ -95,7 +96,7 @@ def _help(target, source, env):
         """Vectora GH Bot — alvos SCons (rodar da raiz do repositório)
 
 Setup
-  scons install    instala dependências Node do workspace pelo lockfile
+  scons install    instala dependências Node do app pelo lockfile
 
 Build
   scons frontend   compila somente o painel web; não instala dependências
@@ -103,7 +104,7 @@ Build
 
 Qualidade
   scons lint       Prettier e TypeScript typecheck
-  scons tests      executa testes definidos pelo workspace, se houver
+  scons tests      executa testes definidos pelo app e tooling compartilhado
   scons ci         install + lint + build + tests
 
 Manutenção
