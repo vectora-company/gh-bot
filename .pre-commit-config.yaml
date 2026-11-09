@@ -1,0 +1,75 @@
+default_language_version:
+  python: python3
+  node: "24"
+
+default_stages: [pre-commit]
+minimum_pre_commit_version: 4.0.0
+
+exclude: |
+  (?x)^(
+    .*\.lock$|
+    .*pnpm-lock\.yaml$|
+    \.env.*|
+    \.venv/.*|
+    (^|/)node_modules/.*|
+    (^|/)dist/.*|
+    (^|/)coverage/.*|
+    (^|/)__pycache__/.*
+  )$
+
+repos:
+  - repo: local
+    hooks:
+      - id: environment
+        name: Detect host OS and development tools
+        entry: python utils/checks.py environment
+        language: system
+        always_run: true
+        pass_filenames: false
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents, --unsafe]
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=5000]
+      - id: detect-private-key
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+        args: [--redact]
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier (TypeScript, JSON, Markdown, YAML, CSS)
+        entry: pnpm exec prettier --write
+        language: system
+        files: \.(ts|tsx|js|jsx|json|md|yaml|yml|css)$
+      - id: typescript-types
+        name: TypeScript typecheck
+        entry: pnpm typecheck
+        language: system
+        files: \.(ts|tsx)$
+        pass_filenames: false
+      - id: repository-tests
+        name: Repository utility tests
+        entry: python -m unittest discover -s utils -p test_*.py
+        language: system
+        files: ^utils/.*\.py$
+        pass_filenames: false
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+        files: ^\.github/workflows/.*\.ya?ml$

@@ -1,0 +1,16 @@
+# Documentação do Vectora GH Bot
+
+- [Produto e escopo](product.md)
+- [Arquitetura](architecture.md)
+- [Identidade e fluxo de instalação](authentication.md)
+- [Integração com GitHub](github-integration.md)
+- [Integração com Services](services-integration.md)
+- [Integração com Engine](engine-integration.md)
+- [Providers, storage e modelos](configuration.md)
+- [Comportamento do Bot](behavior.md)
+- [Segurança](security.md)
+- [CLI e operação](operations.md)
+- [Docker e Kubernetes](deployment.md)
+- [Levantamento das propostas antigas](legacy-proposals.md)
+- [Referências de produto](references.md)
+- [Roadmap de bootstrap](roadmap.md)

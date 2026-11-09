@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "app/dist",
+    "rootDir": "app/src",
+    "declaration": true,
+    "sourceMap": true
+  },
+  "include": ["app/src/cli.ts"]
+}

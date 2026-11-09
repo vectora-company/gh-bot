@@ -147,3 +147,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# SCons and Python repository tooling
+.sconsign.dblite
+.scons-logs/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
