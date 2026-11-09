@@ -119,6 +119,8 @@ function hasEmbeddedSecret(
       "secret",
       "apikey",
       "privatekey",
+      "secretkey",
+      "credential",
     ].some((marker) => normalizedKey.endsWith(marker));
     const isSecretReference = /(env|ref|path)$/i.test(key);
     if (containsSecretValue && !isSecretReference) {
@@ -131,6 +133,7 @@ function hasEmbeddedSecret(
 
 async function writeJsonSecure(path: string, value: unknown) {
   await mkdir(config.dataDir, { recursive: true, mode: 0o700 });
+  if (process.platform !== "win32") await chmod(config.dataDir, 0o700);
   const temporary = `${path}.${process.pid}.tmp`;
   await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`, {
     mode: 0o600,
