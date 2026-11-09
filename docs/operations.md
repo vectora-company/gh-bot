@@ -3,7 +3,7 @@
 ## Comandos planejados
 
 ```text
-vectora-gh-bot start                 Inicia API e painel web
+vectora-gh-bot start                 Inicia o app e seu servidor
 vectora-gh-bot setup                 Configura caminho interativo
 vectora-gh-bot auth login            Conecta Vectora Services
 vectora-gh-bot github connect        Conecta uma conta/instalação GitHub
@@ -20,9 +20,9 @@ comandos são roadmap e não devem ser apresentados como disponíveis.
 ## SCons e instalação de desenvolvimento
 
 `scons install` instala as dependências travadas do app com
-`pnpm install --frozen-lockfile`. `scons frontend` somente compila o frontend
+`pnpm install --frozen-lockfile`. `scons frontend` compila o app TanStack Start
 em `app/` e pressupõe que a instalação já foi feita;
-`scons build` compila painel e servidor, `scons lint` verifica tipos, `scons
+`scons build` compila a aplicação e CLI, `scons lint` verifica tipos, `scons
 tests` executa a suíte disponível e `scons ci` encadeia as verificações locais.
 O CI de pull requests executa o fluxo SCons em Linux, Windows e macOS, além de
 pre-commit, validação de metadados e varredura de segredos.

@@ -7,9 +7,11 @@ self-hosted pelo próprio usuário em desktop, VPS ou cluster. No modo self-host
 tráfego de review vai diretamente do GitHub para o endpoint do usuário; o
 Services não fica no caminho de cada execução.
 
-O produto é escrito em TypeScript sobre Hono e roda como processo no host usando
-Node.js ou Bun, sem Electron. O painel usa React, Vite, TanStack Router e Query,
-Zustand e Motion. A lógica reutilizável
+O produto é um app full-stack TypeScript com TanStack Start, executado pelo
+Nitro como um único processo Node.js ou Bun, sem Electron. A interface usa
+React, Vite, TanStack Router e Query, Zustand e Motion. Rotas de servidor e
+server functions do próprio TanStack atendem a UI e integram Services e Engine;
+não há servidor HTTP separado. A lógica reutilizável
 de IA pertence à [Vectora Engine](https://github.com/vectora-ltda/engine), cuja
 API Rust é consumida pelo binding TypeScript publicado no npm. A Company não é
 o painel de configuração do Bot: ela fornece conta e acesso ao Vectora token
@@ -42,14 +44,13 @@ vectora-gh-bot doctor
 vectora-gh-bot start
 ```
 
-Depois, abra `http://127.0.0.1:3210` para configurar a instalação. O servidor
-Hono expõe a especificação OpenAPI em `/api/openapi.json` e usa adapters de
-runtime próprios para Node.js e Bun. O CLI também
-será a interface para setup, conexão com Services, contas GitHub, diagnóstico e
+Depois, abra `http://127.0.0.1:3210` para configurar a instalação. TanStack Start
+serve o painel e as rotas HTTP no mesmo runtime. O CLI também será a interface
+para setup, conexão com Services, contas GitHub, diagnóstico e
 exportação/importação segura da configuração.
 
-O servidor pode ser iniciado com `node app/dist/server/cli.js start` ou
-`bun run app/dist/server/cli.js start`, tanto em desktop quanto em VPS.
+O servidor pode ser iniciado com `node app/dist/cli.js start` ou
+`bun run app/dist/cli.js start`, tanto em desktop quanto em VPS.
 
 ### Docker
 
@@ -84,7 +85,7 @@ padrão.
 
 ## Estado do bootstrap
 
-Este repositório está no bootstrap inicial. O CLI, a API de health e o painel
+Este repositório está no bootstrap inicial. O CLI, a rota de health e o painel
 de setup são o esqueleto de desenvolvimento; login no Services, vínculo de
 GitHub, execução de jobs pela Engine, persistência de configuração e adaptadores
 de storage ainda não estão implementados. A interface mostra esses estados como

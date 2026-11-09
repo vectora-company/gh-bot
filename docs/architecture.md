@@ -6,10 +6,10 @@
 flowchart LR
   Operator[Operador] --> UI[Web UI do GH Bot]
   Operator --> CLI[CLI npm]
-  UI --> API[GH Bot Hono API · Node.js / Bun]
-  CLI --> API
-  API --> Services[Vectora Services<br/>login e capacidades contratadas]
-  API --> Engine[Vectora Engine<br/>Rust via binding npm]
+  UI --> App[TanStack Start · Nitro · Node.js / Bun]
+  CLI --> App
+  App --> Services[Vectora Services<br/>login e capacidades contratadas]
+  App --> Engine[Vectora Engine<br/>Rust via binding npm]
   Engine --> Providers[Providers e Decision Models]
   Engine --> Stores[SQLite / LanceDB / NATS<br/>PostgreSQL / Qdrant / Redis]
   GitHub[GitHub] -->|review-action: HTTPS endpoint + token| Proxy[Reverse proxy opcional do operador]
@@ -19,13 +19,13 @@ flowchart LR
 
 ## Limites
 
-- O produto é um único app e pacote npm. `app/src/frontend/` contém a UI e
-  `app/src/server/` contém a CLI e a API Hono; ambos são compilados/publicados
-  juntos sem workspace ou pacote frontend separado.
+- O produto é um único app e pacote npm. `app/src/routes/` contém páginas e
+  endpoints TanStack Start; `app/src/` contém componentes, middleware e CLI.
+  Nitro hospeda tudo no mesmo processo, sem servidor HTTP separado.
 
-- A UI chama somente a API local. Tokens e credenciais não vão para o bundle.
-- API Hono controla configuração, setup, ciclo de vida de jobs e adaptadores
-  GitHub; a Engine executa o runtime genérico.
+- Server functions e server routes do TanStack Start controlam configuração,
+  setup, ciclo de vida de jobs e adaptadores GitHub; a Engine executa o runtime
+  genérico. Tokens e credenciais não vão para o bundle do navegador.
 - O binding TypeScript chama o núcleo Rust. Contrato, eventos, erros e
   cancelamento vêm da Engine.
 - Services autentica a conta Vectora e oferece capacidades compartilhadas
@@ -51,17 +51,13 @@ flowchart LR
 
 ## API HTTP
 
-- A API é dividida em grupos versionados (`/api/v1`) e rotas de sistema
-  (`/healthz`, `/readyz`); contratos OpenAPI são expostos em
-  `/api/openapi.json`.
-- Cada rota valida entrada e saída por schema. Erros HTTP são normalizados e
-  erros inesperados não expõem stack traces ao cliente.
-- Middleware comum adiciona request ID, cabeçalhos seguros, limite de corpo,
-  CORS por allowlist explícita e logs estruturados com duração e status.
-- O adapter Node usa `@hono/node-server`; Bun usa `Bun.serve` e o adapter
-  estático de Bun. Ambos entregam o mesmo app Hono e assets do painel.
-- Desenvolvimento local usa Vite com proxy para a API. Para uso remoto, o
-  operador publica o endpoint por HTTPS através do reverse proxy que administra.
+- Server routes file-based atendem endpoints como `/api/v1/bootstrap` e
+  `/healthz`; server functions servem chamadas internas tipadas entre UI e
+  servidor. Valide entrada e autorização dentro de cada handler.
+- Middleware global TanStack adiciona request ID, cabeçalhos seguros e logs
+  estruturados com duração e status; middleware CSRF protege server functions.
+- Nitro entrega o app para Node.js ou Bun. Vite inicia a aplicação integrada
+  no desenvolvimento; um reverse proxy pode terminar TLS em VPS.
 
 ## Painel web
 

@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { useUiStore } from "./stores/ui-store";
+import { getBootstrapStatus } from "../lib/bootstrap";
+import { useUiStore } from "../stores/ui-store";
 
 const sections = [
   { label: "Visão geral", path: "/" as const },
@@ -13,12 +14,6 @@ const sections = [
   { label: "Engine", section: "engine" },
 ] as const;
 
-async function getBootstrapStatus() {
-  const response = await fetch("/api/v1/bootstrap");
-  if (!response.ok) throw new Error("Falha ao consultar a API do GH Bot");
-  return (await response.json()) as { product: string; setupRequired: boolean };
-}
-
 export function App() {
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
@@ -27,7 +22,7 @@ export function App() {
   const toggleNavigation = useUiStore((state) => state.toggleNavigation);
   const bootstrapQuery = useQuery({
     queryKey: ["bootstrap-status"],
-    queryFn: getBootstrapStatus,
+    queryFn: () => getBootstrapStatus(),
   });
 
   return (

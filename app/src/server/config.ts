@@ -26,29 +26,11 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env) {
   const dataDir =
     parsed.VECTORA_GH_BOT_DATA_DIR?.replace(/^~(?=$|[\\/])/, homedir()) ??
     defaultDataDir;
-  const allowedOrigins = (env.VECTORA_GH_BOT_ALLOWED_ORIGINS ?? "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean)
-    .map((origin) => {
-      const parsedOrigin = new URL(origin);
-      if (
-        !["http:", "https:"].includes(parsedOrigin.protocol) ||
-        parsedOrigin.origin !== origin
-      ) {
-        throw new Error(
-          `VECTORA_GH_BOT_ALLOWED_ORIGINS values must be bare HTTP(S) origins: ${origin}`,
-        );
-      }
-      return parsedOrigin.origin;
-    });
-
   return {
     host: parsed.VECTORA_GH_BOT_HOST,
     port: parsed.VECTORA_GH_BOT_PORT,
     dataDir,
     servicesUrl: parsed.VECTORA_SERVICES_URL.replace(/\/$/, ""),
-    allowedOrigins,
   } as const;
 }
 

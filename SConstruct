@@ -46,7 +46,7 @@ def _install(target, source, env):
 
 
 def _web(target, source, env):
-    _run("pnpm", "build:frontend")
+    _run("pnpm", "build:start")
 
 
 def _lint(target, source, env):
@@ -58,7 +58,6 @@ def _lint(target, source, env):
         "app/src",
         "app/vite.config.ts",
         "app/tsconfig.json",
-        "app/index.html",
         "docs",
         "README.md",
         "AGENTS.md",
@@ -85,7 +84,7 @@ def _ci(target, source, env):
 
 
 def _clean(target, source, env):
-    for path in ("app/dist", "coverage", ".scons-logs"):
+    for path in ("app/dist", "app/.output", "coverage", ".scons-logs"):
         absolute = os.path.join(ROOT, path)
         if os.path.isdir(absolute):
             shutil.rmtree(absolute)
@@ -99,8 +98,8 @@ Setup
   scons install    instala dependências Node do app pelo lockfile
 
 Build
-  scons frontend   compila somente o painel web; não instala dependências
-  scons build      compila painel e backend TypeScript
+  scons frontend   compila a aplicação TanStack Start; não instala dependências
+  scons build      compila a aplicação e a CLI
 
 Qualidade
   scons lint       Prettier e TypeScript typecheck
@@ -115,7 +114,7 @@ Manutenção
 
 def _build(target, source, env):
     _web(target, source, env)
-    _run("pnpm", "run", "build:server")
+    _run("pnpm", "run", "build:cli")
 
 
 env = Environment(ENV=os.environ)

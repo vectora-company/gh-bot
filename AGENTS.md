@@ -19,7 +19,8 @@ Company era o painel e o Vectora App servia como host do modo self-hosted.
   GitHub, provider, Engine ou storage pelo Services.
 - **Vectora Company:** dashboard de conta e emissão/acesso ao Vectora token. Não é o
   frontend administrativo do GH Bot.
-- **Runtime do produto:** Hono em processo Node.js 22+ ou Bun para desktop/VPS;
+- **Runtime do produto:** TanStack Start com Nitro em processo Node.js 22+ ou
+  Bun para desktop/VPS;
   não adicionar target serverless.
 - **Painel:** React/Vite, TanStack Router para rotas, TanStack Query para estado
   remoto, Zustand para estado transitório e Motion para animações.
@@ -52,11 +53,11 @@ Services, sem transformar o Services em proxy de execução.
 9. Mantenha `SConstruct`, `.pre-commit-config.yaml`, `utils/` e `.github/workflows/`
    como partes obrigatórias do bootstrap. CI e hooks devem funcionar em Linux,
    Windows e macOS; `scons frontend` nunca instala dependências.
-10. Todo o código do produto fica em `app/`: frontend em `app/src/frontend/`,
-    API Hono e CLI em `app/src/server/`. Rotas novas da API pertencem a
-    `app/src/server/routes/`, usam contratos
-    tipados/OpenAPI e validação Zod. Preserve middleware de request ID, log
-    estruturado, cabeçalhos seguros, limites de payload e CORS allowlist.
+10. Todo o código do produto fica em `app/`. Páginas e endpoints ficam em
+    `app/src/routes/`; use server functions para chamadas internas e server
+    routes para endpoints HTTP externos. Não introduza um segundo servidor HTTP.
+    Valide entrada e autorização no servidor; preserve request ID, logs
+    estruturados e cabeçalhos seguros.
 
 ## Referências
 

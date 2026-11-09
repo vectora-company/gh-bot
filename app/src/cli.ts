@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+import { spawn } from "node:child_process";
 import { access, mkdir } from "node:fs/promises";
 import { constants } from "node:fs";
-import { readConfig } from "./config.js";
-import { startServer } from "./start.js";
+import { fileURLToPath } from "node:url";
+import { readConfig } from "./server/config.js";
 
 const [command = "start", ...args] = process.argv.slice(2);
 
@@ -46,6 +47,49 @@ async function doctor() {
   if (checks.some((check) => !check.ok)) process.exitCode = 1;
 }
 
+function start() {
+  const config = readConfig();
+  const entry = fileURLToPath(
+    new URL("../.output/server/index.mjs", import.meta.url),
+  );
+
+  void access(entry, constants.R_OK).then(
+    () => {
+      const server = spawn(process.execPath, [entry], {
+        stdio: "inherit",
+        env: {
+          ...process.env,
+          NITRO_HOST: config.host,
+          NITRO_PORT: String(config.port),
+        },
+      });
+
+      const forwardSignal = (signal: NodeJS.Signals) => {
+        if (server.exitCode === null) server.kill(signal);
+      };
+      process.once("SIGINT", forwardSignal);
+      process.once("SIGTERM", forwardSignal);
+      server.once("error", (error) => {
+        console.error(
+          `Falha ao iniciar o servidor TanStack Start: ${error.message}`,
+        );
+        process.exitCode = 1;
+      });
+      server.once("exit", (code, signal) => {
+        process.removeListener("SIGINT", forwardSignal);
+        process.removeListener("SIGTERM", forwardSignal);
+        process.exitCode = code ?? (signal ? 1 : 0);
+      });
+    },
+    () => {
+      console.error(
+        "Build do app ausente. Execute `pnpm build` antes de iniciar.",
+      );
+      process.exitCode = 1;
+    },
+  );
+}
+
 if (args.length > 0) {
   console.error(`Unexpected arguments: ${args.join(" ")}`);
   process.exitCode = 2;
@@ -56,19 +100,7 @@ if (args.length > 0) {
 } else if (command === "doctor") {
   await doctor();
 } else if (command === "start") {
-  const server = await startServer();
-  let shuttingDown = false;
-  const shutdown = async (signal: NodeJS.Signals) => {
-    if (shuttingDown) return;
-    shuttingDown = true;
-    console.info(
-      JSON.stringify({ level: "info", event: "shutdown_started", signal }),
-    );
-    await server.close();
-    console.info(JSON.stringify({ level: "info", event: "shutdown_complete" }));
-  };
-  process.once("SIGINT", (signal) => void shutdown(signal));
-  process.once("SIGTERM", (signal) => void shutdown(signal));
+  start();
 } else {
   console.error(`Unknown command: ${command}`);
   help();

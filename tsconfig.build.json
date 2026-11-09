@@ -6,5 +6,5 @@
     "declaration": true,
     "sourceMap": true
   },
-  "include": ["app/src/server/**/*.ts"]
+  "include": ["app/src/cli.ts"]
 }
