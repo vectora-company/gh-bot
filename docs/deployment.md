@@ -1,5 +1,21 @@
 # Hospedagem, Docker e Kubernetes
 
+O GH Bot é um processo de longa duração para desktop ou servidor. O runtime
+suportado é Node.js 22+ ou Bun; não há alvo de deploy serverless. No desktop,
+o padrão escuta somente em `127.0.0.1`. Para VPS, configure o bind externo e
+termine TLS em um reverse proxy administrado pelo operador (por exemplo Caddy,
+Nginx ou Traefik), restringindo o acesso ao endpoint de administração.
+
+```bash
+npm install --global @vectora/gh-bot
+vectora-gh-bot start
+# ou, para um build local:
+bun run dist/cli.js start
+```
+
+O endpoint de webhook deve ser publicado com HTTPS e autenticação dedicada da
+Action. O Vectora token não é segredo de webhook.
+
 ## Serviço hospedado pela Vectora
 
 A Vectora Ltda opera uma modalidade paga do GH Bot em infraestrutura própria.

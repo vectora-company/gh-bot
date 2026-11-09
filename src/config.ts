@@ -1,4 +1,4 @@
-import { homedir } from "node:os";
+import { homedir, platform } from "node:os";
 import { resolve } from "node:path";
 import { z } from "zod";
 
@@ -11,14 +11,45 @@ const envSchema = z.object({
 
 export function readConfig(env: NodeJS.ProcessEnv = process.env) {
   const parsed = envSchema.parse(env);
+  const defaultDataDir =
+    platform() === "win32"
+      ? resolve(
+          env.LOCALAPPDATA ?? resolve(homedir(), "AppData", "Local"),
+          "Vectora GH Bot",
+        )
+      : platform() === "darwin"
+        ? resolve(homedir(), "Library", "Application Support", "Vectora GH Bot")
+        : resolve(
+            env.XDG_DATA_HOME ?? resolve(homedir(), ".local", "share"),
+            "vectora-gh-bot",
+          );
   const dataDir =
-    parsed.VECTORA_GH_BOT_DATA_DIR?.replace(/^~(?=$|\/)/, homedir()) ??
-    resolve(homedir(), ".local/share/vectora-gh-bot");
+    parsed.VECTORA_GH_BOT_DATA_DIR?.replace(/^~(?=$|[\\/])/, homedir()) ??
+    defaultDataDir;
+  const allowedOrigins = (env.VECTORA_GH_BOT_ALLOWED_ORIGINS ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+    .map((origin) => {
+      const parsedOrigin = new URL(origin);
+      if (
+        !["http:", "https:"].includes(parsedOrigin.protocol) ||
+        parsedOrigin.origin !== origin
+      ) {
+        throw new Error(
+          `VECTORA_GH_BOT_ALLOWED_ORIGINS values must be bare HTTP(S) origins: ${origin}`,
+        );
+      }
+      return parsedOrigin.origin;
+    });
 
   return {
     host: parsed.VECTORA_GH_BOT_HOST,
     port: parsed.VECTORA_GH_BOT_PORT,
     dataDir,
     servicesUrl: parsed.VECTORA_SERVICES_URL.replace(/\/$/, ""),
+    allowedOrigins,
   } as const;
 }
+
+export type AppConfig = ReturnType<typeof readConfig>;

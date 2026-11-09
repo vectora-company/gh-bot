@@ -57,6 +57,8 @@ a {
   display: grid;
   place-items: center;
   font-weight: 700;
+  border: 0;
+  cursor: pointer;
 }
 .brand b {
   color: var(--muted);
@@ -105,9 +107,41 @@ nav a.active {
   background: #1e2d30;
   color: var(--accent);
 }
-nav a.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+.navigation-collapsed {
+  grid-template-columns: 76px minmax(0, 1fr);
+}
+.navigation-collapsed .brand > span:not(.brand-mark),
+.navigation-collapsed .instance,
+.navigation-collapsed nav a,
+.navigation-collapsed .sidebar-footer {
+  font-size: 0;
+}
+.navigation-collapsed nav a span {
+  font-size: 14px;
+}
+.navigation-collapsed .brand {
+  padding-inline: 6px;
+}
+.section-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+.section-placeholder {
+  width: min(100%, 680px);
+  padding: 32px;
+}
+.section-placeholder h1 {
+  text-transform: capitalize;
+}
+.section-placeholder p {
+  margin: 12px 0;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent);
+  text-decoration: none;
 }
 .sidebar-footer {
   margin-top: auto;

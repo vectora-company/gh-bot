@@ -16,9 +16,11 @@ async function doctor() {
   const config = readConfig();
   const checks: Array<{ name: string; ok: boolean; detail: string }> = [
     {
-      name: "Node.js",
-      ok: Number(process.versions.node.split(".")[0]) >= 22,
-      detail: process.versions.node,
+      name: process.versions.bun ? "Bun" : "Node.js",
+      ok: process.versions.bun
+        ? true
+        : Number(process.versions.node.split(".")[0]) >= 22,
+      detail: process.versions.bun ?? process.versions.node,
     },
   ];
 
@@ -54,7 +56,19 @@ if (args.length > 0) {
 } else if (command === "doctor") {
   await doctor();
 } else if (command === "start") {
-  startServer();
+  const server = await startServer();
+  let shuttingDown = false;
+  const shutdown = async (signal: NodeJS.Signals) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.info(
+      JSON.stringify({ level: "info", event: "shutdown_started", signal }),
+    );
+    await server.close();
+    console.info(JSON.stringify({ level: "info", event: "shutdown_complete" }));
+  };
+  process.once("SIGINT", (signal) => void shutdown(signal));
+  process.once("SIGTERM", (signal) => void shutdown(signal));
 } else {
   console.error(`Unknown command: ${command}`);
   help();

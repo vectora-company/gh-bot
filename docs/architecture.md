@@ -6,21 +6,21 @@
 flowchart LR
   Operator[Operador] --> UI[Web UI do GH Bot]
   Operator --> CLI[CLI npm]
-  UI --> API[GH Bot Node API]
+  UI --> API[GH Bot Hono API · Node.js / Bun]
   CLI --> API
   API --> Services[Vectora Services<br/>login e capacidades contratadas]
   API --> Engine[Vectora Engine<br/>Rust via binding npm]
   Engine --> Providers[Providers e Decision Models]
   Engine --> Stores[SQLite / LanceDB / NATS<br/>PostgreSQL / Qdrant / Redis]
-  GitHub[GitHub] -->|review-action: endpoint + token| Edge[DNS / roteamento de borda opcional]
-  Edge -->|origin hosted ou self-hosted| API
+  GitHub[GitHub] -->|review-action: HTTPS endpoint + token| Proxy[Reverse proxy opcional do operador]
+  Proxy -->|origin hosted ou self-hosted| API
   API --> GitHub
 ```
 
 ## Limites
 
 - A UI chama somente a API local. Tokens e credenciais não vão para o bundle.
-- API Node controla configuração, setup, ciclo de vida de jobs e adaptadores
+- API Hono controla configuração, setup, ciclo de vida de jobs e adaptadores
   GitHub; a Engine executa o runtime genérico.
 - O binding TypeScript chama o núcleo Rust. Contrato, eventos, erros e
   cancelamento vêm da Engine.
@@ -33,9 +33,10 @@ flowchart LR
 
 ## Caminho de um evento
 
-1. `vectora-review-action` no workflow do repositório chama o endpoint público
-   configurado, autenticando com token/segredo. A borda Cloudflare pode rotear
-   o request até o origin self-hosted; Services não processa esse payload.
+1. `vectora-review-action` no workflow do repositório chama diretamente o
+   endpoint público configurado, autenticando com token/segredo. Um reverse
+   proxy configurado pelo operador pode terminar TLS e encaminhar o request;
+   Services não processa esse payload.
 2. GH Bot valida a autenticação, instalação, repositório, evento, entrega e
    política local; verifica idempotency key antes de agendar.
 3. GH Bot constrói um contexto tipado e limitado e pede uma execução à Engine.
@@ -44,6 +45,30 @@ flowchart LR
 5. GH Bot valida a saída, cria review/comentário pelo escopo da instalação,
    registra estado e correlaciona IDs de GitHub, job e run.
 
+## API HTTP
+
+- A API é dividida em grupos versionados (`/api/v1`) e rotas de sistema
+  (`/healthz`, `/readyz`); contratos OpenAPI são expostos em
+  `/api/openapi.json`.
+- Cada rota valida entrada e saída por schema. Erros HTTP são normalizados e
+  erros inesperados não expõem stack traces ao cliente.
+- Middleware comum adiciona request ID, cabeçalhos seguros, limite de corpo,
+  CORS por allowlist explícita e logs estruturados com duração e status.
+- O adapter Node usa `@hono/node-server`; Bun usa `Bun.serve` e o adapter
+  estático de Bun. Ambos entregam o mesmo app Hono e assets do painel.
+- Desenvolvimento local usa Vite com proxy para a API. Para uso remoto, o
+  operador publica o endpoint por HTTPS através do reverse proxy que administra.
+
+## Painel web
+
+- React e Vite compõem o painel sem acoplamento ao processo desktop do Vectora.
+- TanStack Router controla rotas tipadas e navegação; TanStack Query mantém o
+  estado remoto e políticas de cache/refetch.
+- Zustand fica reservado ao estado transitório de interface. Estado de API não
+  é duplicado no store global.
+- Motion anima transições locais; `MotionConfig` respeita a preferência de
+  movimento reduzido do sistema operacional.
+
 ## Configuração e estado
 
 O modo hospedado é operado pela Vectora Ltda e controlado por assinatura. No
@@ -51,7 +76,7 @@ modo self-hosted, o usuário opera o processo, endpoint e storage em sua
 infraestrutura. Os dois modos consomem a mesma Engine e têm a mesma UI/CLI; só
 mudam hospedagem, responsabilidade operacional e entitlement. O fluxo de review
 não passa pelo backend de aplicação do Services: `review-action` chama o
-endpoint público, que pode usar roteamento da borda até o origin.
+endpoint público, que pode ser exposto por um reverse proxy até o origin.
 
 Configuração é versionada e guardada no runtime correspondente. Segredos ficam separados da
 configuração declarativa, cifrados com uma chave de instalação ou delegados ao

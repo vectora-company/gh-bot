@@ -5,7 +5,8 @@
 O repositório `vectora-review-action` é o ponto de entrada configurado no
 workflow do GitHub. Cada instalação informa o endpoint público e um token ou
 segredo específico do Bot. A Action envia o evento/contexto necessário ao
-endpoint; a borda/roteamento Cloudflare pode encaminhá-lo ao origin self-hosted.
+diretamente ao endpoint; um reverse proxy operado pelo usuário pode encaminhá-lo
+ao processo self-hosted.
 Para o GH Bot hospedado, endpoint e origin são operados pela Vectora Ltda; no
 self-hosted, o origin é a VPS/cluster do usuário. A API de aplicação do
 Services não processa nem faz proxy de cada request.
@@ -44,10 +45,10 @@ demais contas conectadas.
 ## Endpoint por modalidade
 
 No self-hosted, o operador configura endpoint, usuário/credencial de acesso e
-segredo do Bot para a instalação. O request chega ao endpoint público e é
-roteado pela borda Cloudflare para a infraestrutura do usuário, sem executar o
-GH Bot na Cloudflare. No modo hospedado, endpoint e origin são operados pela
-Vectora Ltda. Não introduzir relay de aplicação Services no caminho padrão.
+segredo do Bot para a instalação. O request chega ao endpoint público da
+infraestrutura do usuário, sem passar por um runtime de terceiros. No modo
+hospedado, endpoint e origin são operados pela Vectora Ltda. Não introduzir
+relay de aplicação Services no caminho padrão.
 
 O bootstrap inicial ainda não processa eventos GitHub; a integração deve ficar
 marcada como indisponível até assinatura, install identity, replay e idempotência

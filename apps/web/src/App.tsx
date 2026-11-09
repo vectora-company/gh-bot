@@ -1,19 +1,48 @@
+import { useQuery } from "@tanstack/react-query";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { motion } from "motion/react";
+import { useUiStore } from "./stores/ui-store";
+
 const sections = [
-  "Visão geral",
-  "GitHub",
-  "Providers",
-  "Decision Models",
-  "Storage",
-  "Comportamento",
-  "Engine",
-];
+  { label: "Visão geral", path: "/" as const },
+  { label: "GitHub", section: "github" },
+  { label: "Providers", section: "providers" },
+  { label: "Decision Models", section: "decision-models" },
+  { label: "Storage", section: "storage" },
+  { label: "Comportamento", section: "behavior" },
+  { label: "Engine", section: "engine" },
+] as const;
+
+async function getBootstrapStatus() {
+  const response = await fetch("/api/v1/bootstrap");
+  if (!response.ok) throw new Error("Falha ao consultar a API do GH Bot");
+  return (await response.json()) as { product: string; setupRequired: boolean };
+}
 
 export function App() {
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+  const navigationCollapsed = useUiStore((state) => state.navigationCollapsed);
+  const toggleNavigation = useUiStore((state) => state.toggleNavigation);
+  const bootstrapQuery = useQuery({
+    queryKey: ["bootstrap-status"],
+    queryFn: getBootstrapStatus,
+  });
+
   return (
-    <div className="shell">
+    <div
+      className={`shell${navigationCollapsed ? " navigation-collapsed" : ""}`}
+    >
       <aside className="sidebar">
         <div className="brand">
-          <span className="brand-mark">V</span>
+          <button
+            className="brand-mark"
+            onClick={toggleNavigation}
+            aria-label="Alternar navegação"
+          >
+            V
+          </button>
           <span>
             Vectora <b>GH Bot</b>
           </span>
@@ -23,16 +52,32 @@ export function App() {
           <small>bootstrap</small>
         </div>
         <nav aria-label="Configurações">
-          {sections.map((section, index) => (
-            <a
-              className={index === 0 ? "active" : "disabled"}
-              href="#"
-              key={section}
-            >
-              {section}
-              <span>{index === 0 ? "⌂" : "·"}</span>
-            </a>
-          ))}
+          {sections.map((section) => {
+            const active =
+              ("path" in section && pathname === section.path) ||
+              ("section" in section && pathname === `/${section.section}`);
+            const className = active ? "active" : "";
+            const content = (
+              <>
+                {section.label}
+                <span>{active ? "⌂" : "·"}</span>
+              </>
+            );
+            return "section" in section ? (
+              <Link
+                className={className}
+                key={section.label}
+                to="/$section"
+                params={{ section: section.section }}
+              >
+                {content}
+              </Link>
+            ) : (
+              <Link className={className} key={section.label} to={section.path}>
+                {content}
+              </Link>
+            );
+          })}
         </nav>
         <div className="sidebar-footer">
           <span>Hosted · Self-hosted</span>
@@ -52,7 +97,12 @@ export function App() {
             Entrar com Vectora Services <span>↗</span>
           </button>
         </header>
-        <section className="intro">
+        <motion.section
+          className="intro"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+        >
           <div className="intro-icon">✳</div>
           <div>
             <p className="eyebrow">UM PRODUTO, DUAS FORMAS DE OPERAR</p>
@@ -63,9 +113,23 @@ export function App() {
               própria instância; a configuração fica no GH Bot.
             </p>
           </div>
-        </section>
-        <section className="steps">
-          <article className="step-card">
+        </motion.section>
+        <motion.section
+          className="steps"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.06 } },
+          }}
+        >
+          <motion.article
+            className="step-card"
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
             <div className="step-number">01</div>
             <div>
               <span className="tag">HOSTED · ASSINATURA</span>
@@ -79,24 +143,29 @@ export function App() {
                 Verificar acesso hosted <span>→</span>
               </button>
             </div>
-          </article>
-          <article className="step-card">
+          </motion.article>
+          <motion.article
+            className="step-card"
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
             <div className="step-number">02</div>
             <div>
               <span className="tag">SELF-HOSTED · SEUS RECURSOS</span>
               <h3>Hospede sua instância</h3>
               <p>
-                Instale por npm, Docker ou Kubernetes na sua VPS. Configure
-                endpoint e credenciais; a review-action chega pela URL pública,
-                com roteamento Cloudflare opcional, sem executar o Bot no
-                Services.
+                Instale por npm, Docker ou Kubernetes em desktop, VPS ou
+                cluster. Configure endpoint e credenciais; a review-action chama
+                sua URL pública, sem executar o Bot no Services.
               </p>
               <button disabled>
                 Configurar instalação <span>→</span>
               </button>
             </div>
-          </article>
-        </section>
+          </motion.article>
+        </motion.section>
         <section className="steps">
           <article className="step-card">
             <div className="step-number">03</div>
@@ -157,7 +226,11 @@ export function App() {
             </div>
             <div className="service-row">
               <span>Vectora Engine</span>
-              <span className="muted">Binding npm pendente</span>
+              <span className="muted">
+                {bootstrapQuery.isSuccess
+                  ? "API conectada · binding pendente"
+                  : "Binding npm pendente"}
+              </span>
             </div>
             <div className="service-row">
               <span>review-action</span>
@@ -168,10 +241,9 @@ export function App() {
             <span className="eyebrow">TRÁFEGO E PRIVACIDADE</span>
             <h3>Services não processa os jobs</h3>
             <p>
-              Na modalidade self-hosted, a review-action chama o endpoint
-              público, que pode rotear pela borda Cloudflare até sua instância.
-              A Vectora opera a modalidade paga. O Services cuida de login e de
-              capacidades contratadas.
+              Na modalidade self-hosted, a review-action chama diretamente o
+              endpoint público protegido por TLS. A Vectora opera a modalidade
+              paga. O Services cuida de login e de capacidades contratadas.
             </p>
             <a href="https://github.com/vectora-ltda/gh-bot/tree/main/docs">
               Ler arquitetura e segurança <span>↗</span>

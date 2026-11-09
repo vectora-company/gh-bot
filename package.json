@@ -17,7 +17,9 @@
   ],
   "scripts": {
     "dev": "concurrently -k \"tsx watch src/cli.ts start\" \"pnpm --dir apps/web dev\"",
+    "dev:bun": "concurrently -k \"bun --watch src/cli.ts start\" \"pnpm --dir apps/web dev\"",
     "start": "node dist/cli.js start",
+    "start:bun": "bun run dist/cli.js start",
     "doctor": "tsx src/cli.ts doctor",
     "build": "pnpm --dir apps/web build && tsc -p tsconfig.build.json",
     "build:server": "tsc -p tsconfig.build.json",
@@ -26,7 +28,9 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@hono/bun": "1.0.1",
     "@hono/node-server": "^1.19.0",
+    "@hono/zod-openapi": "1.6.3",
     "hono": "^4.9.0",
     "zod": "^4.1.0"
   },

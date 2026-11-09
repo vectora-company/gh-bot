@@ -8,6 +8,7 @@ review-action chama o endpoint do Bot; o backend Services não é proxy do job.
 ## Ambiente
 
 - Node.js 22 ou superior.
+- Bun também é suportado para executar o servidor e scripts locais.
 - pnpm 10, conforme `packageManager` em `package.json`.
 - Python 3.10 ou superior, SCons e pre-commit.
 - `scons install` (executa `pnpm install --frozen-lockfile`) para instalar dependências Node do workspace pelo lockfile.
@@ -31,7 +32,7 @@ review-action chama o endpoint do Bot; o backend Services não é proxy do job.
   da assinatura; o self-hosted roda na infraestrutura do usuário. Ambos usam a
   UI/CLI do GH Bot e a mesma Engine.
 - Para a `review-action`, mantenha explícito o contrato de endpoint público,
-  credencial do Bot, roteamento Cloudflare opcional e origin. Não confunda esse
+  credencial do Bot e reverse proxy opcional operado pelo usuário. Não confunda esse
   segredo com o Vectora token.
 - Segredos nunca entram em logs, telemetria, saída de diagnóstico, bundle web
   ou arquivos de configuração versionados.

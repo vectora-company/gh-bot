@@ -5,7 +5,7 @@
 Vectora GH Bot é um produto independente e open source para automatizar
 trabalho em repositórios GitHub usando a Vectora Engine. Há dois modos de
 operação: hospedado e mantido pela Vectora Ltda, mediante assinatura, ou
-self-hosted pelo usuário em sua própria VPS/cluster. A UI e a CLI pertencem ao
+self-hosted pelo usuário em desktop, VPS ou cluster. A UI e a CLI pertencem ao
 GH Bot em ambos os modos; Company não é seu painel administrativo.
 
 ## Modos de distribuição
@@ -23,18 +23,18 @@ Os três modos usam o mesmo schema de configuração e APIs. Não há Electron.
 
 ## Quem faz o quê
 
-| Componente              | Responsabilidade                                                                                                                                                              |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GH Bot                  | Produto e superfície GitHub: CLI, painel, políticas, agendamento/idempotência e saída de reviews/comentários; pode ser operado pela Vectora ou pelo usuário.                  |
-| Vectora Engine          | Runtime agêntico, providers, Decision Models e adapters de storage reutilizáveis, pelo binding npm/Rust.                                                                      |
-| Vectora Services        | Login/identidade Vectora, validação do token e capacidades compartilhadas explicitamente contratadas. Não encaminha eventos nem chamadas do runtime por padrão.               |
-| Company                 | Criar/gerenciar a conta Vectora e disponibilizar o token; pode direcionar ao produto hospedado. Não configura o Bot.                                                          |
-| `vectora-review-action` | Action configurada no repositório GitHub para chamar o endpoint público do GH Bot, com endpoint e segredo/token de autenticação; a borda Cloudflare pode rotear até o origin. |
+| Componente              | Responsabilidade                                                                                                                                                |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GH Bot                  | Produto e superfície GitHub: CLI, painel, políticas, agendamento/idempotência e saída de reviews/comentários; pode ser operado pela Vectora ou pelo usuário.    |
+| Vectora Engine          | Runtime agêntico, providers, Decision Models e adapters de storage reutilizáveis, pelo binding npm/Rust.                                                        |
+| Vectora Services        | Login/identidade Vectora, validação do token e capacidades compartilhadas explicitamente contratadas. Não encaminha eventos nem chamadas do runtime por padrão. |
+| Company                 | Criar/gerenciar a conta Vectora e disponibilizar o token; pode direcionar ao produto hospedado. Não configura o Bot.                                            |
+| `vectora-review-action` | Action configurada no repositório GitHub para chamar diretamente o endpoint público do GH Bot, com endpoint e segredo/token de autenticação.                    |
 
 O GH Bot tem backend de produto pequeno, mas não nulo: precisa validar eventos,
 mapear eventos GitHub para execuções da Engine, aplicar escopo/regras, deduplicar
 entregas e publicar o resultado no GitHub. No self-hosted, a Action chama o
-endpoint público configurado, que pode rotear pela borda Cloudflare. Não deve recriar loop de agente,
+endpoint público configurado, opcionalmente exposto por reverse proxy operado pelo usuário. Não deve recriar loop de agente,
 drivers de LLM ou backends de storage.
 
 ## Propriedade dos dados

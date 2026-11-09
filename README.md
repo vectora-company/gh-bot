@@ -3,11 +3,13 @@
 O Vectora GH Bot é um produto independente para automatizar trabalho em
 repositórios GitHub. Ele consome a Vectora Engine e pode ser usado de duas
 formas: hospedado e operado pela Vectora Ltda como benefício de assinatura, ou
-self-hosted pelo próprio usuário em sua VPS/cluster. No modo self-hosted, o
+self-hosted pelo próprio usuário em desktop, VPS ou cluster. No modo self-hosted, o
 tráfego de review vai diretamente do GitHub para o endpoint do usuário; o
 Services não fica no caminho de cada execução.
 
-O produto é escrito em TypeScript/Node.js, sem Electron. A lógica reutilizável
+O produto é escrito em TypeScript sobre Hono e roda como processo no host usando
+Node.js ou Bun, sem Electron. O painel usa React, Vite, TanStack Router e Query,
+Zustand e Motion. A lógica reutilizável
 de IA pertence à [Vectora Engine](https://github.com/vectora-ltda/engine), cuja
 API Rust é consumida pelo binding TypeScript publicado no npm. A Company não é
 o painel de configuração do Bot: ela fornece conta e acesso ao Vectora token
@@ -23,8 +25,8 @@ próprio produto GH Bot.
 - **Self-hosted:** gratuito para instalar e executar na sua infraestrutura,
   usando seus próprios recursos e credenciais. Configure a URL pública e um
   segredo de webhook/token no GitHub Actions `review-action`; a Action chama
-  o endpoint público, que pode rotear pela borda Cloudflare ao seu origin sem
-  executar o Bot no Services. O login no Services é usado para identidade e recursos
+  diretamente o endpoint público, protegido por TLS e opcionalmente exposto
+  por um reverse proxy operado pelo usuário, sem executar o Bot no Services. O login no Services é usado para identidade e recursos
   que realmente dependam do Services, não para encaminhar cada evento.
 
 No modo self-hosted, o custo de VPS, operação e disponibilidade é do usuário.
@@ -40,9 +42,14 @@ vectora-gh-bot doctor
 vectora-gh-bot start
 ```
 
-Depois, abra `http://127.0.0.1:3210` para configurar a instalação. O CLI também
+Depois, abra `http://127.0.0.1:3210` para configurar a instalação. O servidor
+Hono expõe a especificação OpenAPI em `/api/openapi.json` e usa adapters de
+runtime próprios para Node.js e Bun. O CLI também
 será a interface para setup, conexão com Services, contas GitHub, diagnóstico e
 exportação/importação segura da configuração.
+
+O servidor pode ser iniciado com `node dist/cli.js start` ou
+`bun run dist/cli.js start`, tanto em desktop quanto em VPS.
 
 ### Docker
 

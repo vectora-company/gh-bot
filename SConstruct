@@ -50,7 +50,24 @@ def _web(target, source, env):
 
 
 def _lint(target, source, env):
-    _run("pnpm", "exec", "prettier", "--check", "src", "apps/web/src", "package.json")
+    _run(
+        "pnpm",
+        "exec",
+        "prettier",
+        "--check",
+        "src",
+        "apps/web/src",
+        "apps/web/vite.config.ts",
+        "docs",
+        "README.md",
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        ".github",
+        ".pre-commit-config.yaml",
+        ".prettierrc.json",
+        "package.json",
+        "pnpm-workspace.yaml",
+    )
     _run("pnpm", "typecheck")
 
 
