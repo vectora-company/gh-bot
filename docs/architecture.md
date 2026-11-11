@@ -9,7 +9,7 @@ flowchart LR
   UI --> App[TanStack Start · Nitro · Node.js / Bun]
   CLI --> App
   App --> Services[Vectora Services<br/>login e capacidades contratadas]
-  App --> Engine[Vectora Engine<br/>Rust via binding npm]
+  App --> Engine[Vectora Engine<br/>Rust via binding TypeScript local]
   Engine --> Providers[Providers e Decision Models]
   Engine --> Stores[SQLite / LanceDB / NATS<br/>PostgreSQL / Qdrant / Redis]
   GitHub[GitHub] -->|review-action: HTTPS endpoint + token| Proxy[Reverse proxy opcional do operador]
@@ -28,6 +28,10 @@ flowchart LR
   genérico. Tokens e credenciais não vão para o bundle do navegador.
 - O binding TypeScript chama o núcleo Rust. Contrato, eventos, erros e
   cancelamento vêm da Engine.
+- Durante o desenvolvimento, `@vectora/engine` é um link para
+  `../engine/bindings/typescript`; SCons instala os dois conjuntos de
+  dependências e `scons build` compila o addon Rust local. A publicação npm é
+  apenas uma opção de distribuição e não participa do ciclo de desenvolvimento.
 - Services autentica a conta Vectora e oferece capacidades compartilhadas
   explicitamente contratadas. Não encaminha cada evento, chamada GitHub,
   chamada de modelo ou operação de storage.

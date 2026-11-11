@@ -13,7 +13,10 @@ Company era o painel e o Vectora App servia como host do modo self-hosted.
 - **Vectora GH Bot:** configuração local, CLI, interface web, integração GitHub,
   validação de eventos, idempotência de jobs e publicação de resultados.
 - **Vectora Engine:** runtime, chamadas a modelos, Decision Models e storage
-  reutilizável. Não duplicar essas capacidades em TypeScript.
+  reutilizável. Não duplicar essas capacidades em TypeScript. Durante o
+  desenvolvimento conjunto, o GH Bot deve consumir o binding Rust do checkout
+  local `../engine`; publicação npm não é pré-requisito para desenvolver nem
+  integrar os projetos.
 - **Vectora Services:** login/autenticação pelo Vectora token e APIs
   compartilhadas explicitamente contratadas. Não encaminhar cada chamada de
   GitHub, provider, Engine ou storage pelo Services.
@@ -33,8 +36,10 @@ Services, sem transformar o Services em proxy de execução.
 
 ## Regras
 
-1. Preserve uma única implementação de runtime na Engine Rust. O pacote npm é
-   um binding ao Rust, não uma reimplementação.
+1. Preserve uma única implementação de runtime na Engine Rust. O binding
+   TypeScript local é a interface de desenvolvimento; o pacote npm será uma
+   forma de distribuição, não uma reimplementação nem dependência de publicação
+   para o desenvolvimento conjunto.
 2. Trate configurações como schema versionado com migrações, permissões de
    arquivo seguras, backup e redaction.
 3. Use o menor escopo GitHub necessário. Verifique assinatura de webhook,

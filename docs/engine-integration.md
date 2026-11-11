@@ -14,15 +14,30 @@ uma cópia TypeScript do runtime.
 - Traduzir eventos/resultado do runtime para comentários, reviews e status
   GitHub com idempotência do lado do produto.
 
-## Dependências e maturidade
+## Desenvolvimento conjunto
 
-O pacote npm da Engine ainda está sendo construído. Integrações devem ser
-adicionadas capability por capability quando a API Rust e a binding TypeScript
-estiverem publicadas e versionadas. Não declarar tool calling, streaming,
-Decision Models, replay ou storage disponíveis antes de validar a versão
-concreta do pacote.
+Durante o desenvolvimento, o GH Bot consome `../engine/bindings/typescript`
+diretamente como dependência local `link:`. Não é necessário publicar nem
+versionar um pacote npm para desenvolver ou testar os dois projetos juntos.
 
-Durante o bootstrap, manter `EngineClient` como interface tipada e um adapter
-explicitamente ausente. Não implementar provider fake ou runtime substituto em
-TypeScript. Para dev/test, fixtures determinísticas podem implementar o
-protocolo no limite do adapter sem chamar provedores reais.
+`scons install` instala as dependências do binding local e do GH Bot, sem
+compilar o addon nativo. `scons build` compila a Engine Rust e sua binding
+TypeScript antes da aplicação e da CLI. O diretório irmão `../engine` deve
+estar disponível no checkout de desenvolvimento. A integração é validada
+contra o código Engine presente nesse diretório, incluindo alterações ainda
+não publicadas.
+
+O GH Bot deve exercitar primeiro as capabilities que já têm contratos e
+bindings reais. Se uma capability necessária estiver faltando, ela é
+implementada na Engine e ligada ao fluxo do Bot na mesma stack de trabalho;
+não se cria um runtime substituto em TypeScript nem se bloqueia o trabalho
+esperando uma release. Fixtures continuam úteis para testes determinísticos de
+fronteira, mas não substituem a validação de carregamento e execução do addon
+Rust local.
+
+O Bot mantém responsabilidades específicas do produto: autenticação e eventos
+GitHub, autorização por instalação/repositório, configuração e apresentação
+operacional. A Engine fornece o runtime reutilizável e os contratos. Os testes
+do Bot devem distinguir falhas do addon Engine, configuração incompleta e
+indisponibilidade de integrações externas, sem enviar credenciais ao estado de
+health ou bootstrap.

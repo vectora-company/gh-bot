@@ -10,6 +10,7 @@ export const Route = createFileRoute("/api/openapi.json")({
           paths: {
             "/api/v1/bootstrap": { get: { summary: "Estado do setup" } },
             "/healthz": { get: { summary: "Health do processo" } },
+            "/readyz": { get: { summary: "Prontidão do runtime Engine" } },
           },
         }),
     },

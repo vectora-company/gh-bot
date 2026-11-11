@@ -34,7 +34,7 @@ export const Route = createRootRoute({
       {
         property: "og:image",
         content:
-          "https://raw.githubusercontent.com/vectora-ltda/gh-bot/main/app/public/gh-bot.png",
+          "https://raw.githubusercontent.com/vectora-company/gh-bot/main/app/public/gh-bot.png",
       },
       { property: "og:image:alt", content: "Ícone do Vectora GH Bot" },
       { property: "og:image:type", content: "image/png" },
@@ -44,21 +44,29 @@ export const Route = createRootRoute({
       { name: "twitter:title", content: "Vectora GH Bot" },
       {
         name: "twitter:description",
-        content:
-          "Automação agêntica para GitHub na sua própria instalação.",
+        content: "Automação agêntica para GitHub na sua própria instalação.",
       },
       {
         name: "twitter:image",
         content:
-          "https://raw.githubusercontent.com/vectora-ltda/gh-bot/main/app/public/gh-bot.png",
+          "https://raw.githubusercontent.com/vectora-company/gh-bot/main/app/public/gh-bot.png",
       },
       { name: "twitter:image:alt", content: "Ícone do Vectora GH Bot" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/gh-bot.svg" },
-      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "32x32",
+        href: "/favicon-32x32.png",
+      },
       { rel: "shortcut icon", href: "/favicon.ico" },
-      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+      {
+        rel: "apple-touch-icon",
+        sizes: "180x180",
+        href: "/apple-touch-icon.png",
+      },
     ],
     title: "Vectora GH Bot",
   }),
