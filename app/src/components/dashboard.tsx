@@ -222,9 +222,11 @@ export function App() {
             <div className="service-row">
               <span>Vectora Engine</span>
               <span className="muted">
-                {bootstrapQuery.isSuccess
-                  ? "API conectada · binding pendente"
-                  : "Binding npm pendente"}
+                {bootstrapQuery.isPending
+                  ? "Verificando binding Rust local…"
+                  : bootstrapQuery.data?.engine.status === "ready"
+                    ? `Binding Rust local · contrato de chat ${bootstrapQuery.data.engine.contracts?.chat}`
+                    : "Binding Rust local indisponível · execute scons build"}
               </span>
             </div>
             <div className="service-row">
@@ -240,15 +242,15 @@ export function App() {
               endpoint público protegido por TLS. A Vectora opera a modalidade
               paga. O Services cuida de login e de capacidades contratadas.
             </p>
-            <a href="https://github.com/vectora-ltda/gh-bot/tree/main/docs">
+            <a href="https://github.com/vectora-company/gh-bot/tree/main/docs">
               Ler arquitetura e segurança <span>↗</span>
             </a>
           </div>
         </section>
         <footer>
           Vectora GH Bot · Open source sob AGPL-3.0 ·{" "}
-          <a href="https://github.com/vectora-ltda/gh-bot">
-            vectora-ltda/gh-bot
+          <a href="https://github.com/vectora-company/gh-bot">
+            vectora-company/gh-bot
           </a>
         </footer>
       </main>

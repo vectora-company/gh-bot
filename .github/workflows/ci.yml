@@ -23,21 +23,40 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          path: gh-bot
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          repository: vectora-company/engine
+          ref: main
+          path: engine
           persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.15.0
+          version: 11.5.0
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Protocol Buffers compiler
+        uses: arduino/setup-protoc@c65c819552d16ad3c9b72d9dfd5ba5237b9c906b # v3.0.0
+        with:
+          version: "36.2"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            engine -> engine/target
       - name: Install SCons
         run: python -m pip install scons
       - name: Detect environment
+        working-directory: gh-bot
         run: python utils/checks.py environment
       - name: Install dependencies and run complete checks
+        working-directory: gh-bot
         run: scons ci
 
   pull-request-metadata:
@@ -65,24 +84,47 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          path: gh-bot
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          repository: vectora-company/engine
+          ref: main
+          path: engine
           persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.15.0
+          version: 11.5.0
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Protocol Buffers compiler
+        uses: arduino/setup-protoc@c65c819552d16ad3c9b72d9dfd5ba5237b9c906b # v3.0.0
+        with:
+          version: "36.2"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            engine -> engine/target
       - name: Install repository tools
         run: python -m pip install scons pre-commit
-      - name: Install locked app dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install linked Engine and GH Bot dependencies
+        working-directory: gh-bot
+        run: scons install
+      - name: Build local Engine binding
+        working-directory: gh-bot
+        run: pnpm engine:build
       - name: Run hooks on PR changes
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        working-directory: gh-bot
         run: pre-commit run --show-diff-on-failure --from-ref "$BASE_SHA" --to-ref "$HEAD_SHA"
       - name: Ensure hooks did not modify files
+        working-directory: gh-bot
         run: git diff --exit-code

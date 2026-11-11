@@ -42,14 +42,17 @@ def _run(*args: str, cwd: str = ROOT) -> None:
 def _install(target, source, env):
     _tool("node")
     _tool("pnpm")
+    _run("pnpm", "engine:install")
     _run("pnpm", "install", "--frozen-lockfile")
 
 
 def _web(target, source, env):
+    _run("pnpm", "engine:build")
     _run("pnpm", "build:start")
 
 
 def _lint(target, source, env):
+    _run("pnpm", "engine:build")
     _run(
         "pnpm",
         "exec",
@@ -72,6 +75,7 @@ def _lint(target, source, env):
 
 
 def _tests(target, source, env):
+    _run("pnpm", "engine:build")
     _run("python", "-m", "unittest", "discover", "-s", "utils", "-p", "test_*.py")
     _run("pnpm", "test")
 
@@ -95,11 +99,11 @@ def _help(target, source, env):
         """Vectora GH Bot — alvos SCons (rodar da raiz do repositório)
 
 Setup
-  scons install    instala dependências Node do app pelo lockfile
+  scons install    instala dependências Node do app e da Engine local
 
 Build
   scons frontend   compila a aplicação TanStack Start; não instala dependências
-  scons build      compila a aplicação e a CLI
+  scons build      compila o addon Rust local da Engine, a aplicação e a CLI
 
 Qualidade
   scons lint       Prettier e TypeScript typecheck

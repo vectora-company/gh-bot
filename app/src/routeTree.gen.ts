@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionRouteImport } from './routes/$section'
 import { Route as HealthzRouteImport } from './routes/healthz'
+import { Route as ReadyzRouteImport } from './routes/readyz'
 import { Route as ApiOpenapiDotjsonRouteImport } from './routes/api/openapi[.]json'
 import { Route as ApiV1BootstrapRouteImport } from './routes/api/v1/bootstrap'
 
@@ -30,6 +31,11 @@ const HealthzRoute = HealthzRouteImport.update({
   path: '/healthz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadyzRoute = ReadyzRouteImport.update({
+  id: '/readyz',
+  path: '/readyz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiOpenapiDotjsonRoute = ApiOpenapiDotjsonRouteImport.update({
   id: '/api/openapi.json',
   path: '/api/openapi.json',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$section': typeof SectionRoute
   '/healthz': typeof HealthzRoute
+  '/readyz': typeof ReadyzRoute
   '/api/openapi.json': typeof ApiOpenapiDotjsonRoute
   '/api/v1/bootstrap': typeof ApiV1BootstrapRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$section': typeof SectionRoute
   '/healthz': typeof HealthzRoute
+  '/readyz': typeof ReadyzRoute
   '/api/openapi.json': typeof ApiOpenapiDotjsonRoute
   '/api/v1/bootstrap': typeof ApiV1BootstrapRoute
 }
@@ -60,20 +68,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$section': typeof SectionRoute
   '/healthz': typeof HealthzRoute
+  '/readyz': typeof ReadyzRoute
   '/api/openapi.json': typeof ApiOpenapiDotjsonRoute
   '/api/v1/bootstrap': typeof ApiV1BootstrapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/$section' | '/healthz' | '/api/openapi.json' | '/api/v1/bootstrap'
+    | '/'
+    | '/$section'
+    | '/healthz'
+    | '/readyz'
+    | '/api/openapi.json'
+    | '/api/v1/bootstrap'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$section' | '/healthz' | '/api/openapi.json' | '/api/v1/bootstrap'
+  to:
+    | '/'
+    | '/$section'
+    | '/healthz'
+    | '/readyz'
+    | '/api/openapi.json'
+    | '/api/v1/bootstrap'
   id:
     | '__root__'
     | '/'
     | '/$section'
     | '/healthz'
+    | '/readyz'
     | '/api/openapi.json'
     | '/api/v1/bootstrap'
   fileRoutesById: FileRoutesById
@@ -82,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SectionRoute: typeof SectionRoute
   HealthzRoute: typeof HealthzRoute
+  ReadyzRoute: typeof ReadyzRoute
   ApiOpenapiDotjsonRoute: typeof ApiOpenapiDotjsonRoute
   ApiV1BootstrapRoute: typeof ApiV1BootstrapRoute
 }
@@ -109,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HealthzRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/readyz': {
+      id: '/readyz'
+      path: '/readyz'
+      fullPath: '/readyz'
+      preLoaderRoute: typeof ReadyzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/openapi.json': {
       id: '/api/openapi.json'
       path: '/api/openapi.json'
@@ -130,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SectionRoute: SectionRoute,
   HealthzRoute: HealthzRoute,
+  ReadyzRoute: ReadyzRoute,
   ApiOpenapiDotjsonRoute: ApiOpenapiDotjsonRoute,
   ApiV1BootstrapRoute: ApiV1BootstrapRoute,
 }

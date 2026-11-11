@@ -9,9 +9,12 @@ review-action chama o endpoint do Bot; o backend Services não é proxy do job.
 
 - Node.js 22 ou superior.
 - Bun também é suportado para executar o servidor e scripts locais.
-- pnpm 10, conforme `packageManager` em `package.json`.
+- pnpm 11.5, compartilhado com o checkout local da Engine.
 - Python 3.10 ou superior, SCons e pre-commit.
-- `scons install` (executa `pnpm install --frozen-lockfile`) para instalar as dependências do único app pelo lockfile.
+- Clones irmãos de `gh-bot` e `engine` no workspace de desenvolvimento.
+- `scons install` instala as dependências do binding TypeScript local da Engine
+  e do app GH Bot, sem compilar o addon nativo.
+- `scons build` compila o núcleo Rust e o binding local, depois o app e a CLI.
 - `pnpm dev` sobe o serviço e o painel Vite.
 - `scons frontend` compila somente o painel e não instala dependências.
 - `scons ci` executa instalação, lint, build e testes locais do tooling.
@@ -50,6 +53,11 @@ scons lint
 scons tests
 scons ci
 ```
+
+O checkout local da Engine é parte do ambiente de desenvolvimento: GH Bot
+consome `../engine/bindings/typescript` por link local. Não publique nem instale
+uma versão do npm para desenvolver a integração. Mudanças necessárias no
+contrato devem ser implementadas e verificadas nos dois repositórios em conjunto.
 
 Não use GitHub Actions `pull_request_target` para executar código vindo da
 branch de um pull request. Leia [`SECURITY.md`](SECURITY.md) antes de tocar em

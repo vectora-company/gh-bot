@@ -14,8 +14,10 @@ Nitro como um único processo Node.js ou Bun, sem Electron. A interface usa
 React, Vite, TanStack Router e Query, Zustand e Motion. Rotas de servidor e
 server functions do próprio TanStack atendem a UI e integram Services e Engine;
 não há servidor HTTP separado. A lógica reutilizável
-de IA pertence à [Vectora Engine](https://github.com/vectora-ltda/engine), cuja
-API Rust é consumida pelo binding TypeScript publicado no npm. A Company não é
+de IA pertence à [Vectora Engine](https://github.com/vectora-company/engine), cuja
+API Rust é consumida pelo binding TypeScript. Durante o desenvolvimento, o GH
+Bot aponta diretamente para o checkout local da Engine; publicar uma versão npm
+não é necessário para avançar ou testar a integração. A Company não é
 o painel de configuração do Bot: ela fornece conta e acesso ao Vectora token
 usado para login no Services. O dashboard pode apresentar a opção hospedada e
 o status da assinatura, mas a configuração operacional do Bot pertence ao
@@ -72,7 +74,7 @@ assets do dashboard retornam 404, enquanto health e APIs continuam disponíveis.
 docker run --rm -p 3210:3210 \
   -e VECTORA_GH_BOT_HOST=0.0.0.0 \
   -v vectora-gh-bot-data:/var/lib/vectora-gh-bot \
-  ghcr.io/vectora-ltda/gh-bot:latest
+  ghcr.io/vectora-company/gh-bot:latest
 ```
 
 Para operação persistente, use o chart em [`deploy/helm/gh-bot`](deploy/helm/gh-bot/)
@@ -110,9 +112,38 @@ roadmap e não são apresentados como conexões já funcionais.
 Consulte [`docs/`](docs/README.md) para arquitetura, segurança, instalação e as
 fronteiras com Services e Engine.
 
+## Desenvolvimento conjunto com a Engine
+
+Mantenha os repositórios `gh-bot` e `engine` como diretórios irmãos. O pacote
+`@vectora/engine` no `package.json` é uma dependência `link:` para
+`../engine/bindings/typescript`; mudanças locais de Rust e do binding ficam
+imediatamente disponíveis ao GH Bot depois de compilar o addon.
+
+```bash
+scons install       # instala dependências dos dois checkouts
+scons build         # compila o addon Rust local, o app e a CLI
+pnpm doctor         # inclui o diagnóstico do runtime Rust local
+pnpm exec tsx app/src/cli.ts engine status
+```
+
+Para validar uma chamada real de modelo pelo binding Rust, configure as
+variáveis abaixo e rode `gh-bot engine chat "Responda apenas: ok"`:
+
+```bash
+VECTORA_GH_BOT_ENGINE_BASE_URL=https://seu-provider/v1
+VECTORA_GH_BOT_ENGINE_MODEL=seu-modelo
+VECTORA_GH_BOT_ENGINE_API_KEY=... # opcional para endpoints sem chave
+```
+
+O fluxo experimental do Bot serve para exercitar a Engine em conjunto. Se uma
+capacidade necessária ainda não existir no binding, implemente-a na Engine e
+conecte-a ao Bot na mesma stack; não substitua o runtime por TypeScript nem
+espere uma publicação npm.
+
 ## Desenvolvimento
 
-Requer Python 3.10+, SCons, Node.js 22+, pnpm 10 e pre-commit.
+Requer Python 3.10+, SCons, Node.js 22+, pnpm 11.5 (compartilhado com o
+binding TypeScript local da Engine) e pre-commit.
 
 ```bash
 scons install
@@ -127,5 +158,5 @@ scons tests
 ## Governança
 
 O Vectora GH Bot é open source sob GNU AGPL-3.0. A organização oficial é
-[vectora-ltda](https://github.com/vectora-ltda) e o fundador e principal
+[vectora-company](https://github.com/vectora-company) e o fundador e principal
 mantenedor é [brunosrz](https://github.com/brunosrz/).

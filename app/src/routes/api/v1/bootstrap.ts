@@ -4,7 +4,7 @@ import { getBootstrapStatus } from "../../../server/bootstrap";
 export const Route = createFileRoute("/api/v1/bootstrap")({
   server: {
     handlers: {
-      GET: () => Response.json(getBootstrapStatus()),
+      GET: async () => Response.json(await getBootstrapStatus()),
     },
   },
 });

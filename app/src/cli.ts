@@ -17,6 +17,8 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { readConfig } from "./server/config.js";
+import { getEngineRuntimeStatus } from "./server/engine.js";
+import { streamEngineChat } from "./server/engine-chat.js";
 
 const sections = [
   ["github", "Contas e integração GitHub"],
@@ -60,6 +62,7 @@ Uso:
   gh-bot stop | status
   gh-bot config [edit|show|import <arquivo>|export [arquivo]]
   gh-bot auth login|status|logout
+  gh-bot engine status|chat <prompt>
   gh-bot doctor | --version | --help
 
 Configuração fica em ${config.configFile}; credenciais de login ficam
@@ -300,9 +303,42 @@ async function doctor() {
   } catch (error) {
     checks.push({ name: "App config", ok: false, detail: message(error) });
   }
+  const engine = await getEngineRuntimeStatus();
+  checks.push({
+    name: "Vectora Engine (local Rust binding)",
+    ok: engine.status === "ready",
+    detail:
+      engine.status === "ready"
+        ? `carregada; contratos ${JSON.stringify(engine.contracts)}`
+        : `indisponível (${engine.error ?? "erro desconhecido"}); execute scons build`,
+  });
   for (const check of checks)
     console.log(`${check.ok ? "✓" : "✗"} ${check.name}: ${check.detail}`);
   if (checks.some((check) => !check.ok)) process.exitCode = 1;
+}
+
+async function engineStatus() {
+  const engine = await getEngineRuntimeStatus();
+  console.log(JSON.stringify(engine, null, 2));
+  if (engine.status !== "ready") process.exitCode = 1;
+}
+
+async function engineChat(prompt: string) {
+  const baseUrl = process.env.VECTORA_GH_BOT_ENGINE_BASE_URL;
+  const model = process.env.VECTORA_GH_BOT_ENGINE_MODEL;
+  const apiKey = process.env.VECTORA_GH_BOT_ENGINE_API_KEY;
+  if (!baseUrl || !model) {
+    throw new Error(
+      "Configure VECTORA_GH_BOT_ENGINE_BASE_URL e VECTORA_GH_BOT_ENGINE_MODEL; a chave é opcional em VECTORA_GH_BOT_ENGINE_API_KEY.",
+    );
+  }
+  for await (const text of streamEngineChat(prompt, {
+    baseUrl,
+    model,
+    ...(apiKey ? { apiKey } : {}),
+  }))
+    process.stdout.write(text);
+  process.stdout.write("\n");
 }
 
 function portAvailable(host: string, port: number): Promise<boolean> {
@@ -511,7 +547,14 @@ try {
   else if (command === "--version" || command === "version")
     console.log("0.1.0");
   else if (command === "doctor") await doctor();
-  else if (command === "start") {
+  else if (command === "engine") {
+    if (args[0] === "status") await engineStatus();
+    else if (args[0] === "chat") {
+      const prompt = args.slice(1).join(" ").trim();
+      if (!prompt) throw new Error("Uso: gh-bot engine chat <prompt>");
+      await engineChat(prompt);
+    } else throw new Error("Uso: gh-bot engine status|chat <prompt>");
+  } else if (command === "start") {
     const modeIndex = args.indexOf("--mode");
     const mode = modeIndex >= 0 ? args[modeIndex + 1] : "dashboard";
     if (
