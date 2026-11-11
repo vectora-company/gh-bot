@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="420" viewBox="0 0 1600 420" role="img" aria-label="GH Bot — GitHub automation, reviews, and workflows">
+  <defs>
+    <linearGradient id="banner-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101827" />
+      <stop offset="1" stop-color="#342044" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="420" rx="28" fill="url(#banner-bg)" />
+  <rect x="2" y="2" width="1596" height="416" rx="26" fill="none" stroke="#C06AF2" stroke-opacity=".42" stroke-width="4" />
+  <circle cx="1430" cy="50" r="250" fill="#C06AF2" opacity=".07" />
+  <svg x="48" y="34" width="352" height="352" viewBox="0 0 512 512">
+    <defs>
+        <linearGradient id="b" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#e1a5ff"/>
+            <stop offset="100%" stop-color="#982ff0"/>
+        </linearGradient>
+        <linearGradient id="c" x1="0" x2=".85" y1="0" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#e1a5ff"/>
+            <stop offset=".45" stop-color="#c265f4"/>
+            <stop offset="1" stop-color="#982ff0"/>
+        </linearGradient>
+        <radialGradient id="a" cx="50%" cy="40%" r="65%">
+            <stop offset="0%" stop-color="#322143"/>
+            <stop offset="100%" stop-color="#110c1c"/>
+        </radialGradient>
+    </defs>
+    <circle cx="256" cy="256" r="252.734" fill="url(#a)" stroke="url(#b)" stroke-width="3.266"/>
+    <path fill="url(#c)" fill-rule="evenodd" d="m981 635-1 1v238l1 1h6l1-1h4l5-3h2l14-7 3-3h1l6-5h1l12-12v-1l4-4v-1l3-3 3-6 2-2 7-14 1-5 2-3 1-6 1-1v-3l1-1v-5l1-1v-7l1-1v-48l-1-1v-6l-1-1-1-11-1-1v-3l-1-1-2-8-2-3v-2l-3-5v-2l-3-6-2-2-1-3-2-2-2-4-3-3v-1l-14-14h-1l-3-3h-1l-8-6-8-4h-2l-3-2h-2l-1-1h-3l-1-1h-3l-1-1Zm-727 0-1 1h-3l-1 1-5 1-7 4h-2l-6 3-3 3h-1l-3 3h-1l-3 3h-1l-13 13v1l-4 4v1l-3 3v1l-4 5-9 18v2l-2 3v2l-1 1v2l-2 4v3l-1 1-1 9-1 1v11l-1 1v39l1 1v10l1 1 1 9 1 1v3l1 1 2 8 2 3v2l4 8 2 2 3 6 6 7v1l13 13h1l5 5h1l5 4 3 1 2 2h2l7 4h2l1 1h2l4 2h3l1 1h7l1-1V636l-1-1Zm394-386h-3l-1-1h-3l-1-1h-5l-1-1h-16l-1 1h-5l-1 1h-3l-1 1-5 1-16 8-3 3h-1l-14 14v1l-4 5-6 12v2l-2 4v3l-1 1v3l-1 1v5l-1 1v16l1 1v5l1 1v3l1 1 1 6 2 3v2l4 8 2 2 2 4 3 3v1l11 11h1l3 3 5 2 2 2 4 2h2l3 2v79l-1 1H467l-1 1h-8l-1 1h-6l-1 1h-5l-1 1h-3l-1 1h-4l-1 1h-2l-1 1h-2l-4 2h-3l-1 1-5 1-3 2-5 1-15 8h-2l-2 2-3 1-2 2-5 2-2 2-4 2-8 7h-1l-3 3-4 2-20 19v1l-5 5v1l-6 6v1l-3 3v1l-10 14-6 12-2 2-1 4-6 11-1 5-3 5v2l-1 1v2l-2 4v3l-2 4v3l-1 1v3l-1 1v4l-1 1v4l-1 1v5l-1 1v5l-1 1v9l-1 1v160l1 1v10l1 1v7l1 1 1 9 1 1 1 8 2 4v3l1 1 2 8 7 14v2l2 2 9 18 8 10 1 3 3 3v1l8 8v1l26 25 4 2 9 8h1l5 5h1l35 36h1l8 7 12 6h2l4 2h3l1 1h5l1 1h108l1-1h6l1-1h2l1-1 8-2 4-2 2-2 5-2 6-5h1l4-4h1l3-3h1l7-7h1l7-6 5-2 2-2 4-1 6-3 8-1 1-1h166l1-1h9l1-1h5l1-1h4l1-1 7-1 1-1h2l1-1h2l1-1 8-2 7-4h2l2-2 3-1 2-2 3-1 2-2 6-3 19-16v-1l12-12v-1l6-7v-1l10-14 11-22v-2l2-3v-2l1-1v-2l1-1v-2l1-1v-2l2-4v-3l1-1v-3l1-1v-4l1-1v-4l1-1v-5l1-1v-7l1-1v-11l1-1V672l-1-1v-15l-1-1v-8l-1-1v-5l-1-1v-4l-1-1v-3l-1-1v-4l-1-1v-3l-1-1-1-8-2-3v-2l-1-1-1-5-2-3v-2l-4-7v-2l-2-3v-2l-3-5v-2l-2-4-4-5-1-3-2-2-1-3-2-2v-1l-2-2-4-7-3-3v-1l-11-12v-1l-11-11h-1l-12-11h-1l-10-8-5-2-7-5-20-10h-2l-1-1h-2l-1-1h-2l-1-1h-2l-1-1h-2l-1-1h-2l-4-2h-3l-4-2h-3l-1-1h-6l-1-1h-5l-1-1h-10l-1-1H654l-1-1v-13l-1-1v-7l1-1v-5l-1-1v-3l1-1v-15l-1-1 1-2v-18l-1-1v-10l12-6 2-2 4-2 4-4h1l5-5v-1l8-9 7-14v-2l2-3 1-7 1-1v-5l1-1v-16l-1-1v-6l-2-4-1-6-2-3v-2l-5-10-2-2-2-4-15-15-8-4-2-2-4-2h-2l-3-2h-2ZM368 621l2-2 4-7 11-12v-1l11-10h1l3-3h1l8-6 5-2 2-2 8-4h2l1-1h2l1-1h2l1-1h2l1-1h2l4-2h3l1-1h3l1-1h5l1-1h151l1-1h3l1 1h57l1-1h7l1 1h28l1-1h10l1 1h19l1-1h4l1 1h10l1-1h11l1 1h21l1 1h5l1 1 8 1 3 2h3l3 2h2l10 5 2 2 7 3 4 4h1l3 3h1l16 16v1l4 4v1l5 6 10 20v2l1 1v2l1 1v2l2 4v3l1 1v4l1 1v4l1 1v11l1 1v126l-1 1v14l-1 1v5l-1 1v3l-1 1-1 7-3 6-1 5-9 18-5 6v1l-4 4v1l-4 4v1l-8 8h-1l-13 12-10 5-2 2-10 5h-2l-3 2h-2l-1 1h-2l-4 2-8 1-1 1h-5l-1 1h-7l-1 1H642l-1-1h-5l-1 1H468l-1-1h-11l-1-1-10-1-1-1h-3l-1-1-5-1-8-4h-2l-10-5-2-2-7-3-3-3h-1l-12-11h-1l-15-17v-1l-4-5-10-20v-2l-3-6v-3l-2-4-1-8-1-1v-6l-1-1V667l1-1v-6l1-1v-3l1-1v-3l2-4v-3l1-1 1-5Zm450 143-1-1v-3l-1-1-1-6-3-5-1-4-2-2v-1l-2-2v-1l-2-2-4-7-15-14-14-8h-2l-3-2h-2l-4-2h-3l-1-1h-6l-1-1h-12l-1 1-9 1-4 2h-4l-1 1h-4l-1 1h-6l-1 1-10 1-13 6-3 3h-1l-3 3h-1l-11 12v1l-6 8v2l-4 7v2l-1 1v2l-2 4v3l-1 1v7l1 1v3l2 4 7 6h2l1 1h11l4-2 5-4 4-7v-3l1-1v-2l3-6 5-6v-1l5-5h1l4-4 7-4h2l6-3h5l1-1h14l1 1h4l1 1 6 1 9 5 11 11v1l2 2 4 8 1 6 3 6 6 6h2l1 1h12l6-3 4-4 2-4v-2l1-1Zm-391 1v9l1 1v2l2 4 5 5 2 1h2l1 1h10l1-1 4-1 4-3v-1l4-5 1-5 2-3v-2l3-6 2-2v-1l11-11h1l5-4 4-2 5-1 1-1h4l1-1h15l1 1 7 1 8 4 2 2h1l11 11 1 3 2 2v2l3 6v3l3 6 5 5 2 1h2l1 1h11l4-2 2-2h1l3-4 2-4v-3l1-1-1-9-1-1v-3l-1-1-1-5-2-3-1-4-2-2-1-3-2-2-4-7-11-11h-1l-4-4h-1l-5-4-12-6-6-1-1-1-6-1-1-1h-4l-1-1h-21l-1 1h-5l-1 1h-3l-4 2h-3l-5 3h-2l-3 2h-2l-4 3h-1l-3 3h-1l-2 2-4 2-4 4h-1l-9 10v1l-8 10v2l-6 12-1 6Z" transform="translate(3.266 -20.415)scale(.4083)"/>
+</svg>
+  <text x="455" y="196" fill="#f7f9fc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="92" font-weight="700">GH Bot</text>
+  <text x="462" y="264" fill="#C06AF2" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500">GitHub automation, reviews, and workflows</text>
+</svg>
