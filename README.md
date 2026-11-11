@@ -1,5 +1,7 @@
 # Vectora GH Bot
 
+![GH Bot](assets/branding/gh-bot-banner.png)
+
 O Vectora GH Bot é um produto independente para automatizar trabalho em
 repositórios GitHub. Ele consome a Vectora Engine e pode ser usado de duas
 formas: hospedado e operado pela Vectora Ltda como benefício de assinatura, ou
